@@ -1,6 +1,7 @@
+/*Fonction créée à la base pour vider la balise portfolio
 function viderMesProjets (){
     document.getElementById("portfolio").innerHTML=""
-}
+}*/
 
 /*Code récupéré par ChatGPT
 const projetsListes = fetch("http://localhost:5678/api/works")
@@ -17,12 +18,30 @@ const projetsListes = fetch("http://localhost:5678/api/works")
     console.error('Erreur de récupération :', error);
 });*/
 
+
 //Mon code qui ne marche pas
 async function recupWorks() {
-    const projetsListes = await fetch("http://localhost:5678/api/works");
-    const Listes = await projetsListes.json();
-    for (let i = 0; i < Listes.length; i++){
+
+    //Récupération GET du local host fichier JSON
+    const projetsListes = await fetch("http://localhost:5678/api/works")
+    const Listes = await projetsListes.json()
+
+    //On vide la balise classe portfolio et on ajoute dans la foulée le titre Mes Projets
+    const ElemGallery = document.getElementById("gallery")
+    ElemGallery.innerHTML = ""
+
+    //On crée une boucle pour créer les élements du DOM
+    //J'aimerais bien ici faire avec l'id
+    for (let i = 0; i < Listes.length; i++){   
         console.log(Listes[i].title)
+        const elemFigure = document.createElement("figure")
+        const elemImg = document.createElement("img")
+        elemImg.src = Listes[i].imageUrl
+        const elemFigcaption = document.createElement("figcaption")
+        elemFigcaption.innerText = Listes[i].title
+        elemFigure.appendChild(elemImg)
+        elemFigure.appendChild(elemFigcaption)
+        ElemGallery.appendChild(elemFigure)
     }
 }
 
