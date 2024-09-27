@@ -19,16 +19,16 @@ const projetsListes = fetch("http://localhost:5678/api/works")
 });*/
 
 
-//Mon code qui ne marche pas
+//************************Cette partie de code me permet d'afficher dynamiquement les projets*****************
+//Mon code, question : est-ce que je peux sortir ma partie GET et la mettre dans une fonction qui retourne Listes ?
 async function recupWorks() {
 
     //Récupération GET du local host fichier JSON
     const projetsListes = await fetch("http://localhost:5678/api/works")
     const Listes = await projetsListes.json()
 
-    //On vide la balise classe portfolio et on ajoute dans la foulée le titre Mes Projets
-    const ElemGallery = document.getElementById("gallery")
-    ElemGallery.innerHTML = ""
+    //On récupère la balise classe gallery
+    const ElemGallery = document.querySelector(".gallery")
 
     //On crée une boucle pour créer les élements du DOM
     //J'aimerais bien ici faire avec l'id
@@ -45,4 +45,57 @@ async function recupWorks() {
     }
 }
 
+
+// Pourquoi dans la console le bonjour apparaît avant mon console.log de ma liste de titre du fichier json ?
+console.log("Bonjour")
+
+
+
+//****Cette partie de code me permet de créer la liste des catégories pour filtre et trier les projets************
+async function recupCategories() {
+
+    //Récupération GET du local host fichier JSON
+    const projetsCategories = await fetch("http://localhost:5678/api/categories")
+    const Categories = await projetsCategories.json()
+
+    //Récupération de la balise dans laquelle créer les boutons de filtres
+    const elemFiltres = document.querySelector(".filtres")
+
+    //Création du bouton Tous
+    const btnTous = document.createElement("span")
+    btnTous.classList.add("btnFiltres")
+    btnTous.innerText = "Tous"
+    elemFiltres.appendChild(btnTous)
+
+    //On crée une boucle pour créer les élements du DOM
+    //J'aimerais bien ici faire avec l'id
+    for (let i = 0; i < Categories.length; i++){   
+        console.log(Categories[i].name)
+        const btnCategories = document.createElement("span")
+        btnCategories.classList.add("btnFiltres")
+        btnCategories.innerText = Categories[i].name
+        elemFiltres.appendChild(btnCategories)
+    }
+}
+
+//Fonction de création des balises principales dans la balise id portfolio
+function domPortfolio (){
+    const elemPortfolio = document.getElementById("portfolio")
+    elemPortfolio.innerHTML=""
+    const elemH2 = document.createElement("h2")
+    elemH2.innerText = "Mes Projets"
+    const elemFiltres = document.createElement("div")
+    elemFiltres.classList.add("filtres")
+    const elemGallery = document.createElement("div")
+    elemGallery.classList.add("gallery")
+    elemPortfolio.appendChild(elemH2)
+    elemPortfolio.appendChild(elemFiltres)
+    elemPortfolio.appendChild(elemGallery)
+}
+
+
+
+//Lancement des fonctions dans l'ordre du DOM
+domPortfolio()
+recupCategories()
 recupWorks()
