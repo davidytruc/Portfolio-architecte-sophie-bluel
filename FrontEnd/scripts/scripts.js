@@ -108,14 +108,14 @@ ListeProjets()
 //*********************Création des fonctions de filtres et tris */
     const choixFiltre = document.querySelector(".filtres")
     choixFiltre.addEventListener("click", async (event) => {
-        event.preventDefault()
-        event.stopPropagation()
-        const retourfiltre = event.target.innerText
-        console.log(retourfiltre)
-        console.log(retourfiltre)
-        if (retourfiltre === "Tous") {
-            ListeProjets()
-        } else {
-            ListeProjetsFiltres(retourfiltre)
+        //event.preventDefault()
+        //event.stopPropagation()
+        if (event.target.classList.contains("btnFiltres")) {
+            const retourfiltre = event.target.innerText
+            if (retourfiltre === "Tous") {
+                ListeProjets()
+            } else {
+                ListeProjetsFiltres(retourfiltre)
+            }
         }
     })
