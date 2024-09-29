@@ -142,11 +142,13 @@ li:hover {
 	border-radius: 25px;
 	color: #1D6154;
 	padding: 10px 20px;
+	background-color: white;
 }
 
 .btnFiltres:hover{
 	color: white;
 	background-color: #1D6154;
+	cursor: pointer;
 }
 
 
