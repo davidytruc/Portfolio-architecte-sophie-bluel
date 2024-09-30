@@ -100,22 +100,22 @@ async function ListeCategories() {
     }
 }
 
+//*********************Lancement création du DOM projets
 creationDomPortfolio()
 ListeCategories()
 ListeProjets()
 
-
 //*********************Création des fonctions de filtres et tris */
-    const choixFiltre = document.querySelector(".filtres")
-    choixFiltre.addEventListener("click", async (event) => {
-        //event.preventDefault()
-        //event.stopPropagation()
-        if (event.target.classList.contains("btnFiltres")) {
-            const retourfiltre = event.target.innerText
-            if (retourfiltre === "Tous") {
-                ListeProjets()
-            } else {
-                ListeProjetsFiltres(retourfiltre)
-            }
+const choixFiltre = document.querySelector(".filtres")
+choixFiltre.addEventListener("click", async (event) => {
+    //event.preventDefault()
+    //event.stopPropagation()
+    if (event.target.classList.contains("btnFiltres")) {
+        const retourfiltre = event.target.innerText
+        if (retourfiltre === "Tous") {
+            ListeProjets()
+        } else {
+            ListeProjetsFiltres(retourfiltre)
         }
-    })
+    }
+})
