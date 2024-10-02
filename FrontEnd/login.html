@@ -14,7 +14,7 @@
 	- Création du fichier script.js dans le dossier frontend script
 	- Ajout de la balise script avec defer pour attendre la fin du chargement de la page
 	- Ajout de type="module" pour préciser qu'il s'agit d'un script de type javascript -->
-	<script type="module" src="" defer></script>
+	<script type="module" src="scripts/login.js" defer></script>
 
 </head>
 <body>
@@ -24,7 +24,7 @@
 		<ul>
 			<a href="" title="Projets"><li>Projets</li></a>
 			<a href="" title="Contact"><li>Contact</li></a>
-			<a href="http://127.0.0.1:5500/FrontEnd/login.html" title="Login"><li>Login</li></a>
+			<a href="login.html" title="Login"><li>Login</li></a>
 			<a href="" title="Instagram"><li><img src="./assets/icons/instagram.png" alt="Instagram"></li></a>
 		</ul>
 	</nav>
@@ -32,11 +32,11 @@
 <main>
 	<section id="login">
 		<h2>Log in</h2>
-		<form action="#" method="post">
+		<form method="post" novalidate>
 			<label for="email">E-mail</label>
-			<input type="email" name="email" id="email">
+			<input type="email" name="email" id="email" placeholder="mon-email@email.com" required>
 			<label for="password">Mot de passe</label>
-			<input type="password" name="password" id="password">
+			<input type="password" name="password" id="password" placeholder="**********" required>
 			<input type="submit" value="Envoyer">
 		</form>
 		<p>Mot de passe oublié</p>

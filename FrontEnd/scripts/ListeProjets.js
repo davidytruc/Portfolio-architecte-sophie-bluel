@@ -32,6 +32,28 @@ function creationDomPortfolio (){
     elemPortfolio.appendChild(elemFiltres)
     elemPortfolio.appendChild(elemGallery)
 }
+async function ListeCategories() {
+
+    let Categories = await GetCategories()
+
+    //Récupération de la balise dans laquelle créer les boutons de filtres
+    const elemFiltres = document.querySelector(".filtres")
+
+    //Création du bouton Tous
+    const btnTous = document.createElement("button")
+    btnTous.classList.add("btnFiltres")
+    btnTous.innerText = "Tous"
+    elemFiltres.appendChild(btnTous)
+
+    //On crée une boucle pour créer les élements du DOM
+    //J'aimerais bien ici faire avec l'id
+    for (let i = 0; i < Categories.length; i++){   
+        const btnCategories = document.createElement("button")
+        btnCategories.classList.add("btnFiltres")
+        btnCategories.innerText = Categories[i].name
+        elemFiltres.appendChild(btnCategories)
+    }
+}
 //************************Cette partie de code me permet d'afficher dynamiquement tous les projets*****************
 async function ListeProjets() {
 
@@ -77,28 +99,7 @@ async function ListeProjetsFiltres(retourfiltre) {
     }
 }
 //****Cette partie de code me permet de créer la liste des catégories pour création des boutons filtre************
-async function ListeCategories() {
 
-    let Categories = await GetCategories()
-
-    //Récupération de la balise dans laquelle créer les boutons de filtres
-    const elemFiltres = document.querySelector(".filtres")
-
-    //Création du bouton Tous
-    const btnTous = document.createElement("button")
-    btnTous.classList.add("btnFiltres")
-    btnTous.innerText = "Tous"
-    elemFiltres.appendChild(btnTous)
-
-    //On crée une boucle pour créer les élements du DOM
-    //J'aimerais bien ici faire avec l'id
-    for (let i = 0; i < Categories.length; i++){   
-        const btnCategories = document.createElement("button")
-        btnCategories.classList.add("btnFiltres")
-        btnCategories.innerText = Categories[i].name
-        elemFiltres.appendChild(btnCategories)
-    }
-}
 
 //*********************Lancement création du DOM projets
 creationDomPortfolio()
