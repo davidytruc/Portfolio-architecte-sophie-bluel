@@ -23,18 +23,24 @@ formulaireLogin.addEventListener("submit", function (event) {
     console.log(saisiePassword.value)
     //On crée l'objet de saisie email et password
     const postLogin = {
-        email: saisieEmail.value,
-        password: saisiePassword.value
+        email: saisieEmail.value, // sophie.bluel@test.tld
+        password: saisiePassword.value // S0phie
     }
     //On crée l'objet de la charge utile
     const chargeUtile = JSON.stringify(postLogin)
     //On envoie à l'aide de fetch
-    fetch("http://localhost:5678/api/users/login"), {
+    fetch("http://localhost:5678/api/users/login", {
         method: "POST",
-        headers : { "Content-Type": "application/json" },
+        headers: { "accept": "application/json",
+            "Content-Type": "application/json" },
         body: chargeUtile
-    }
-   });
+    })
+    .then((Response) => {
+        console.log(Response)
+        return Response.json()
+    })
+})
+
 
 
 
