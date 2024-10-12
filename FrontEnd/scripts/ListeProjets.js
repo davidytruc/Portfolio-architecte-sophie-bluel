@@ -41,12 +41,11 @@ async function ListeCategories() {
 
     //Création du bouton Tous
     const btnTous = document.createElement("button")
-    btnTous.classList.add("btnFiltres")
+    btnTous.classList.add("btnFiltres", "selection")
     btnTous.innerText = "Tous"
     elemFiltres.appendChild(btnTous)
 
     //On crée une boucle pour créer les élements du DOM
-    //J'aimerais bien ici faire avec l'id
     for (let i = 0; i < Categories.length; i++){   
         const btnCategories = document.createElement("button")
         btnCategories.classList.add("btnFiltres")
@@ -115,8 +114,19 @@ choixFiltre.addEventListener("click", async (event) => {
         const retourfiltre = event.target.innerText
         if (retourfiltre === "Tous") {
             ListeProjets()
+            classSelection()
+            event.target.classList.add("selection")
         } else {
             ListeProjetsFiltres(retourfiltre)
+            classSelection()
+            event.target.classList.add("selection")
         }
     }
 })
+//Fonction permettant de supprimer la class "selection" des boutons filtres
+function classSelection() {
+    const mesFiltres = document.querySelectorAll(".btnFiltres")
+    for (let i = 0; i < mesFiltres.length; i++) {
+        mesFiltres[i].classList.remove("selection")
+    }
+}
