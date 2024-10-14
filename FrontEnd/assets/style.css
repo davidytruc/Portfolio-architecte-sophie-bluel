@@ -148,15 +148,10 @@ li:hover {
 	background-color: white;
 }
 
-.btnFiltres:hover {
+.btnFiltres:hover, .selection {
 	color: white;
 	background-color: #1D6154;
 	cursor: pointer;
-}
-
-.selection {
-	color: white;
-	background-color: #1D6154;
 }
 
 /******************************Fin ajout code partie filtre*/

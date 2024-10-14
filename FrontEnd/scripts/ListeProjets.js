@@ -1,22 +1,8 @@
-//Récupération des fichiers JSON via API
-async function GetWorks(){
-    const projetsListes = await fetch("http://localhost:5678/api/works")
-    const Listes = await projetsListes.json()
-    return Listes
-}
-async function GetWorksFiltres(retourfiltre){
-    const projetsListes = await fetch("http://localhost:5678/api/works")
-    const Listes = await projetsListes.json()
-    const ListesFiltrees = Listes.filter(function (projet){
-        return projet.category.name === retourfiltre
-    })
-    console.log(ListesFiltrees)
-    return ListesFiltrees
-}
-async function GetCategories(){
-    const projetsCategories = await fetch("http://localhost:5678/api/categories")
-    const Categories = await projetsCategories.json()
-    return Categories
+// Récupération des données catégories via l'API
+async function dataCategories () {
+    let dataCategories = await fetch("http://localhost:5678/api/categories")
+    let categories = await dataCategories.json()
+    return categories
 }
 //Fonction de création des balises principales dans la balise id portfolio
 function creationDomPortfolio (){
@@ -32,9 +18,10 @@ function creationDomPortfolio (){
     elemPortfolio.appendChild(elemFiltres)
     elemPortfolio.appendChild(elemGallery)
 }
+//****Cette partie de code me permet de créer la liste des catégories pour création des boutons filtre************
 async function ListeCategories() {
 
-    let Categories = await GetCategories()
+    let Categories = await dataCategories()
 
     //Récupération de la balise dans laquelle créer les boutons de filtres
     const elemFiltres = document.querySelector(".filtres")
@@ -53,33 +40,23 @@ async function ListeCategories() {
         elemFiltres.appendChild(btnCategories)
     }
 }
+// //Récupération des données Projets via l'API
+async function GetWorks(mesFiltres){
+    const projetsListes = await fetch("http://localhost:5678/api/works")
+    const Listes = await projetsListes.json()
+    if (mesFiltres === "Tous") {
+        return Listes
+    } else {
+        const ListesFiltrees = Listes.filter(function (projet){
+            return projet.category.name === mesFiltres
+        })
+        return ListesFiltrees
+    }
+}
 //************************Cette partie de code me permet d'afficher dynamiquement tous les projets*****************
-async function ListeProjets() {
+async function ListeProjets(mesFiltres) {
 
-    //let filtreounon = await GetWorks()
-    const Listes = await GetWorks()
-
-    //On récupère la balise classe gallery
-    const ElemGallery = document.querySelector(".gallery")
-    ElemGallery.innerHTML = ""
-
-    //On crée une boucle pour créer les élements du DOM
-    for (let i = 0; i < Listes.length; i++){   
-        const elemFigure = document.createElement("figure")
-        const elemImg = document.createElement("img")
-        elemImg.src = Listes[i].imageUrl
-        const elemFigcaption = document.createElement("figcaption")
-        elemFigcaption.innerText = Listes[i].title
-        elemFigure.appendChild(elemImg)
-        elemFigure.appendChild(elemFigcaption)
-        ElemGallery.appendChild(elemFigure)
-    }
-}
-//************************Cette partie de code me permet d'afficher dynamiquement les projets filtrés*****************
-async function ListeProjetsFiltres(retourfiltre) {
-
-    //let ListesFiltrees = await GetWorksFiltres()
-    const Listes = await GetWorksFiltres(retourfiltre)
+    const Listes = await GetWorks(mesFiltres)
 
     //On récupère la balise classe gallery
     const ElemGallery = document.querySelector(".gallery")
@@ -97,34 +74,31 @@ async function ListeProjetsFiltres(retourfiltre) {
         ElemGallery.appendChild(elemFigure)
     }
 }
-//****Cette partie de code me permet de créer la liste des catégories pour création des boutons filtre************
 
-
-//*********************Lancement création du DOM projets
+//*********************Ouverture de la page**********************************************/
 creationDomPortfolio()
 ListeCategories()
-ListeProjets()
+ListeProjets("Tous")
 
-//*********************Création des fonctions de filtres et tris */
+//*********************Création des fonctions de filtres et tris*************************/
 const choixFiltre = document.querySelector(".filtres")
 choixFiltre.addEventListener("click", async (event) => {
-    //event.preventDefault()
-    //event.stopPropagation()
+    event.preventDefault()
     if (event.target.classList.contains("btnFiltres")) {
         const retourfiltre = event.target.innerText
         if (retourfiltre === "Tous") {
-            ListeProjets()
-            classSelection()
+            supClassSelection()
             event.target.classList.add("selection")
+            ListeProjets(retourfiltre)
         } else {
-            ListeProjetsFiltres(retourfiltre)
-            classSelection()
+            supClassSelection()
             event.target.classList.add("selection")
+            ListeProjets(retourfiltre)
         }
     }
 })
 //Fonction permettant de supprimer la class "selection" des boutons filtres
-function classSelection() {
+function supClassSelection() {
     const mesFiltres = document.querySelectorAll(".btnFiltres")
     for (let i = 0; i < mesFiltres.length; i++) {
         mesFiltres[i].classList.remove("selection")
