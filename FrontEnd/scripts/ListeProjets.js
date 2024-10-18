@@ -8,15 +8,16 @@ async function dataCategories () {
 function creationDomPortfolio (){
     const elemPortfolio = document.getElementById("portfolio")
     elemPortfolio.innerHTML=""
-    const elemH2 = document.createElement("h2")
-    elemH2.innerText = "Mes Projets"
-    const elemFiltres = document.createElement("div")
-    elemFiltres.classList.add("filtres")
-    const elemGallery = document.createElement("div")
-    elemGallery.classList.add("gallery")
-    elemPortfolio.appendChild(elemH2)
-    elemPortfolio.appendChild(elemFiltres)
-    elemPortfolio.appendChild(elemGallery)
+    elemPortfolio.innerHTML=`
+        <div class="projets">   
+            <h2>Mes projets</h2>
+            <div class="modifs invisible">
+                <i class="fa-regular fa-pen-to-square"></i>
+                <p>modifier</p>
+            </div>
+        </div>
+        <div class="filtres"></div>
+        <div class="gallery"></div>`
 }
 //****Cette partie de code me permet de créer la liste des catégories pour création des boutons filtre************
 async function ListeCategories() {
@@ -41,14 +42,14 @@ async function ListeCategories() {
     }
 }
 // //Récupération des données Projets via l'API
-async function GetWorks(mesFiltres){
+async function GetWorks(autres){
     const projetsListes = await fetch("http://localhost:5678/api/works")
     const Listes = await projetsListes.json()
-    if (mesFiltres === "Tous") {
+    if (autres === "Tous") {
         return Listes
     } else {
         const ListesFiltrees = Listes.filter(function (projet){
-            return projet.category.name === mesFiltres
+            return projet.category.name === autres
         })
         return ListesFiltrees
     }
@@ -86,15 +87,9 @@ choixFiltre.addEventListener("click", async (event) => {
     event.preventDefault()
     if (event.target.classList.contains("btnFiltres")) {
         const retourfiltre = event.target.innerText
-        if (retourfiltre === "Tous") {
-            supClassSelection()
-            event.target.classList.add("selection")
-            ListeProjets(retourfiltre)
-        } else {
-            supClassSelection()
-            event.target.classList.add("selection")
-            ListeProjets(retourfiltre)
-        }
+        supClassSelection()
+        ListeProjets(retourfiltre)
+        event.target.classList.add("selection")
     }
 })
 //Fonction permettant de supprimer la class "selection" des boutons filtres
