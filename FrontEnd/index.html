@@ -10,13 +10,11 @@
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 	<script src="https://kit.fontawesome.com/02a8e81d2a.js" crossorigin="anonymous"></script>
-	
 	<!--Commit 1 :
 	- Création du fichier script.js dans le dossier frontend script
 	- Ajout de la balise script avec defer pour attendre la fin du chargement de la page
 	- Ajout de type="module" pour préciser qu'il s'agit d'un script de type javascript -->
 	<script type="module" src="scripts/ListeProjets.js" defer></script>
-
 </head>
 <body>
 <header>
@@ -25,7 +23,8 @@
 		<ul>
 			<a href="" title="Projets"><li>Projets</li></a>
 			<a href="" title="Contact"><li>Contact</li></a>
-			<a href="login.html" title="Login"><li>Login</li></a>
+			<a href="login.html" title="Login" class="login"><li>Login</li></a>
+			<a href="" title="Logout" class="logout invisible"><li>Logout</li></a>
 			<a href="" title="Instagram"><li><img src="./assets/icons/instagram.png" alt="Instagram"></li></a>
 		</ul>
 	</nav>

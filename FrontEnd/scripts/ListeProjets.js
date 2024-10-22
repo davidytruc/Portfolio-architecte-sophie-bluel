@@ -1,14 +1,29 @@
+//Déclaration variable
+let logout = document.querySelector(".logout")
+
 // Récupération des données catégories via l'API
 async function dataCategories () {
     let dataCategories = await fetch("http://localhost:5678/api/categories")
     let categories = await dataCategories.json()
     return categories
 }
+//Vérification du token
+function dataToken(){
+    return window.localStorage.getItem("monToken")
+}
 //Fonction de création des balises principales dans la balise id portfolio
 function creationDomPortfolio (){
+    let login = document.querySelector(".login")
     const elemPortfolio = document.getElementById("portfolio")
     elemPortfolio.innerHTML=""
-    elemPortfolio.innerHTML=`
+    /*On regarde si le localstorage contient le token*/
+    let monToken = dataToken()
+    console.log(monToken)
+    if (monToken === undefined || monToken === null){
+        console.log("Pas de token")
+        login.classList.remove("invisible")
+        logout.classList.add("invisible")
+        elemPortfolio.innerHTML=`
         <div class="projets">   
             <h2>Mes projets</h2>
             <div class="modifs invisible">
@@ -18,6 +33,21 @@ function creationDomPortfolio (){
         </div>
         <div class="filtres"></div>
         <div class="gallery"></div>`
+    } else {
+        console.log("token ok")
+        logout.classList.remove("invisible")
+        login.classList.add("invisible")
+        elemPortfolio.innerHTML=`
+        <div class="projets">   
+            <h2>Mes projets</h2>
+            <div class="modifs">
+                <i class="fa-regular fa-pen-to-square"></i>
+                <p>modifier</p>
+            </div>
+        </div>
+        <div class="filtres invisible"></div>
+        <div class="gallery"></div>`
+    }
 }
 //****Cette partie de code me permet de créer la liste des catégories pour création des boutons filtre************
 async function ListeCategories() {
@@ -99,3 +129,7 @@ function supClassSelection() {
         mesFiltres[i].classList.remove("selection")
     }
 }
+//Déconnexion
+logout.addEventListener("click", () => {
+    window.localStorage.removeItem("monToken")
+})

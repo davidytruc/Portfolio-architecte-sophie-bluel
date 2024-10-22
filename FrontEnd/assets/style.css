@@ -47,6 +47,14 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+a {
+	text-decoration: none;
+	font: 'syne';
+	color: black;
+}
+
+
 /** end reset css**/
 
 body {
@@ -143,10 +151,6 @@ li:hover {
 .modifs{
 	display: flex;
 	gap: 8px;
-}
-
-.invisible{
-	display: none;
 }
 
 /******************************Fin ajout code partie projets modif
@@ -262,10 +266,12 @@ li:hover {
 	margin: 2em 0 1em 0;
 }
 
-#login p {
-	color:#1D6154;
-	font-weight:600;
-	text-decoration: underline;
+
+
+.erreurConnexion {
+	margin-top: 35px;
+	text-align: center;
+	color: red;
 }
 
 /******Fin CSS formulaire de connexion page login.html********/
@@ -288,3 +294,9 @@ footer nav ul {
 	margin: 2em
 }
 
+
+/**********Ajout de la class invisible**********/
+
+.invisible{
+	display: none;
+}
