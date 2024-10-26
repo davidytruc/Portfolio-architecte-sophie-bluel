@@ -18,32 +18,25 @@ function creationDomPortfolio (){
     elemPortfolio.innerHTML=""
     /*On regarde si le localstorage contient le token*/
     let monToken = dataToken()
-    console.log(monToken)
     if (monToken === undefined || monToken === null){
-        console.log("Pas de token")
         login.classList.remove("invisible")
         logout.classList.add("invisible")
         elemPortfolio.innerHTML=`
         <div class="projets">   
             <h2>Mes projets</h2>
-            <div class="modifs invisible">
-                <i class="fa-regular fa-pen-to-square"></i>
-                <p>modifier</p>
-            </div>
         </div>
         <div class="filtres"></div>
         <div class="gallery"></div>`
     } else {
-        console.log("token ok")
         logout.classList.remove("invisible")
         login.classList.add("invisible")
         elemPortfolio.innerHTML=`
         <div class="projets">   
             <h2>Mes projets</h2>
-            <div class="modifs">
+            <a href="" title="Modification" class="modifs">
                 <i class="fa-regular fa-pen-to-square"></i>
                 <p>modifier</p>
-            </div>
+            </a>
         </div>
         <div class="filtres invisible"></div>
         <div class="gallery"></div>`
@@ -130,6 +123,8 @@ function supClassSelection() {
     }
 }
 //Déconnexion
-logout.addEventListener("click", () => {
+logout.addEventListener("click", (e) => {
+    e.preventDefault()
     window.localStorage.removeItem("monToken")
+    window.location.href = "index.html"
 })

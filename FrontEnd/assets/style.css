@@ -136,12 +136,17 @@ li:hover {
 
 /******************************Ajout code partie projets modif*/
 
+#portfolio {
+	text-align: center;
+}
+
 .projets {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 35px;
-	margin-bottom: 40px;
+	display: inline-flex;
+  	justify-content: center;
+  	align-items: center;
+  	gap: 35px;
+  	margin-bottom: 40px;
+  	position: relative;
 }
 
 .projets h2{
@@ -150,7 +155,9 @@ li:hover {
 
 .modifs{
 	display: flex;
-	gap: 8px;
+  	gap: 8px;
+  	position: absolute;
+  	right: -110px;
 }
 
 /******************************Fin ajout code partie projets modif
@@ -294,17 +301,44 @@ footer nav ul {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: rgba(0, 0, 0, 0.9);
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.over {
+	margin-top: 20px;
+}
+
+.over h3 {
+	text-align: center;
+	font-size: large;
 }
 
 .overlaycontenu {
 	overflow: auto;
-	width: 600px;
+	width: 500px;
 	max-width: calc(100vw - 20px);
 	max-height: calc(100vh - 20px);
 	border-radius: 25px;
-	padding: 20px;
+	padding: 30px;
 	background-color: white;
+}
+
+#fermeture {
+	display: block;
+	text-align: right;
+}
+
+.overlay-figure {
+	width: 79%;
+	margin: auto;
+	display: flex;
+	flex-wrap: wrap;
+    gap: 20px 5px;
+    margin-top: 40px;
+}
+
+.smallfigure {
+	height: 100px;
 }
 
 /**********Ajout de la class invisible**********/

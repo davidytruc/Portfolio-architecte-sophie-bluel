@@ -36,10 +36,6 @@ formulaireLogin.addEventListener("submit", async (event) => {
     }
 })
 
-supToken.addEventListener("click", () => {
-    window.localStorage.removeItem("monToken")
-})
-
 
 
 
