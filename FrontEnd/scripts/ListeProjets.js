@@ -128,3 +128,14 @@ logout.addEventListener("click", (e) => {
     window.localStorage.removeItem("monToken")
     window.location.href = "index.html"
 })
+
+document.querySelector(".modifs").addEventListener ("click", (e) => {
+    e.preventDefault()
+    document.querySelector(".overlay").classList.remove("invisible")
+    
+})
+
+document.querySelector(".fermeture").addEventListener ("click", (e) => {
+    e.preventDefault()
+    document.querySelector(".overlay").classList.add("invisible")
+})
