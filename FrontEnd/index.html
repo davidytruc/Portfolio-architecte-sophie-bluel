@@ -15,7 +15,6 @@
 	- Ajout de la balise script avec defer pour attendre la fin du chargement de la page
 	- Ajout de type="module" pour préciser qu'il s'agit d'un script de type javascript -->
 	<script type="module" src="scripts/ListeProjets.js" defer></script>
-	<script type="module" src="scripts/Modification.js" defer></script>
 </head>
 <body>
 <header>
@@ -105,8 +104,11 @@
 		</form>
 	</section>
 	<aside class="overlay invisible">
-		<div class="overlaycontenu">
-			<a href="" alt="Fermer fenêtre" title="Fermer fenêtre" class="fermeture"><i class="fa-solid fa-xmark"></i></a>
+		<!-- <div class="overlaycontenu suppr">
+			<div class="icones">
+				<a href="" alt="Retour" title="Retour" class="retour invisible"><i class="fa-solid fa-arrow-left"></i></a>
+				<a href="" alt="Fermer fenêtre" title="Fermer fenêtre"><i class="fa-solid fa-xmark"></i></a>
+			</div>
 			<section class="over galerie">
 				<h3>Galerie photo</h3>
 				<div class="overlay-figure">
@@ -157,7 +159,22 @@
 				</div>
 				<a href="" alt="Ajouter une photo" title="Ajouter une photo" class="ajoutPhoto">Ajouter une photo</a>
 			</section>
-		</div>	
+		</div>
+		<div class="overlaycontenu ajout1 invisible">
+			<div class="iconesajout">
+				<a href="" alt="Retour" title="Retour" class="retour"><i class="fa-solid fa-arrow-left"></i></a>
+				<a href="" alt="Fermer fenêtre" title="Fermer fenêtre" class="fermeture"><i class="fa-solid fa-xmark"></i></a>
+			</div>
+			<section class="over galerie">
+				<h3>Ajout photo</h3>
+				<div class="overlay-ajout">
+					<form>
+
+					</form>
+				</div>
+				<a href="" alt="Valider" title="Valider" class="ajoutPhoto">Valider</a>
+			</section>
+		</div> -->
 	</aside>
 </main>
 <footer>

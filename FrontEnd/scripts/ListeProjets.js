@@ -128,14 +128,70 @@ logout.addEventListener("click", (e) => {
     window.localStorage.removeItem("monToken")
     window.location.href = "index.html"
 })
-
+//Ouverture de l'overlay
 document.querySelector(".modifs").addEventListener ("click", (e) => {
     e.preventDefault()
-    document.querySelector(".overlay").classList.remove("invisible")
-    
+    let overlay = document.querySelector(".overlay")
+    overlay.classList.remove("invisible")
+    overlay.innerHTML = ""
+    overlay.innerHTML = ouvreOverlaySuppr()
 })
-
-document.querySelector(".fermeture").addEventListener ("click", (e) => {
+//Fermeture de l'overlay en cliquant sur la partie grisée
+document.querySelector(".overlay").addEventListener("click", (e) => {
     e.preventDefault()
-    document.querySelector(".overlay").classList.add("invisible")
+    if (e.target.classList.contains("overlay") || e.target.classList.contains("fermeture")) {
+        document.querySelector(".overlay").classList.add("invisible")
+    }
 })
+// //Bascule vers l'overlay ajout photo
+// document.querySelector(".ajoutPhoto").addEventListener ("click", (e) => {
+//     e.preventDefault()
+//     document.querySelector(".suppr").classList.add("invisible")
+//     document.querySelector(".ajout1").classList.remove("invisible")
+// })
+// //Fonction remplissage overlay suppr
+function ouvreOverlaySuppr() {
+    let monEntete = `
+        <div class="overlaycontenu suppr">
+			<div class="icones">
+				<a href="" alt="Retour" title="Retour" class="retour invisible"><i class="fa-solid fa-arrow-left"></i></a>
+				<a href="" alt="Fermer fenêtre" title="Fermer fenêtre"><i class="fa-solid fa-xmark fermeture"></i></a>
+			</div>
+            <section class="over galerie">
+				<h3>Galerie photo</h3>
+				<div class="overlay-figure">
+    `
+    let leReste = `
+				</div>
+				<a href="" alt="Ajouter une photo" title="Ajouter une photo" class="ajoutPhoto">Ajouter une photo</a>
+			</section>
+		</div>
+    `
+    return monEntete + overlayProjets("Tous") + leReste
+}
+//Fonction appel API pour génération DOM overlay suppr
+async function overlayProjets(mesFiltres) {
+
+    const Listes = await GetWorks(mesFiltres)
+
+    //On récupère la balise classe overlay-figure
+    let ElemGallery = document.querySelector(".overlay-figure")
+    ElemGallery.innerHTML = ""
+
+    //On crée une boucle pour créer les élements du DOM
+    for (let i = 0; i < Listes.length; i++){ 
+        const elemFigure = document.createElement("figure")
+        const elemImg = document.createElement("img")
+        elemImg.classList.add("smallfigure")
+        elemImg.src = Listes[i].imageUrl
+        const a = document.createElement("a")
+        a.setAttribute("href", "")
+        a.classList.add("trash")
+        const elemTrash = document.createElement("i")
+        elemTrash.classList.add("fa-solid", "fa-trash-can")
+        elemFigure.appendChild(elemImg)
+        elemFigure.appendChild(a)
+        a.appendChild(elemTrash)
+        ElemGallery.appendChild(elemFigure)
+    }
+}

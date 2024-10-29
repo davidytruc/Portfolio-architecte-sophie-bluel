@@ -318,7 +318,6 @@ footer nav ul {
 }
 
 .overlaycontenu {
-	position: relative;
 	overflow: auto;
 	width: 500px;
 	max-width: calc(100vw - 20px);
@@ -328,10 +327,17 @@ footer nav ul {
 	background-color: white;
 }
 
-.fermeture {
-	position: absolute;
-	top: 4%;
-	left: 92%;
+.icones {
+	display: flex;
+	justify-content: right;
+}
+
+.iconesajout {
+	display: flex;
+	justify-content: space-between;
+}
+
+.retour, .fermeture {
 	font-size: 150%;
 }
 
