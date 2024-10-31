@@ -188,10 +188,16 @@ async function overlayProjets(mesFiltres) {
         a.setAttribute("href", "")
         a.classList.add("trash")
         const elemTrash = document.createElement("i")
-        elemTrash.classList.add("fa-solid", "fa-trash-can")
+        elemTrash.classList.add("fa-solid", "fa-trash-can", "data-id")
+        //elemTrash.setAttribute("data-idnumber", Listes[i].id)
+        elemTrash.addEventListener("click", () => {
+            console.log(Listes[i].id)
+        })
         elemFigure.appendChild(elemImg)
         elemFigure.appendChild(a)
         a.appendChild(elemTrash)
         ElemGallery.appendChild(elemFigure)
     }
 }
+
+
