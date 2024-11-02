@@ -1,23 +1,22 @@
 //Déclaration variable
 let logout = document.querySelector(".logout")
-
+/*On regarde si le localstorage contient le token*/
+let monToken = dataToken()
+//Vérification du token
+function dataToken(){
+    return window.localStorage.getItem("monToken")
+}
 // Récupération des données catégories via l'API
 async function dataCategories () {
     let dataCategories = await fetch("http://localhost:5678/api/categories")
     let categories = await dataCategories.json()
     return categories
 }
-//Vérification du token
-function dataToken(){
-    return window.localStorage.getItem("monToken")
-}
 //Fonction de création des balises principales dans la balise id portfolio
 function creationDomPortfolio (){
     let login = document.querySelector(".login")
     const elemPortfolio = document.getElementById("portfolio")
     elemPortfolio.innerHTML=""
-    /*On regarde si le localstorage contient le token*/
-    let monToken = dataToken()
     if (monToken === undefined || monToken === null){
         login.classList.remove("invisible")
         logout.classList.add("invisible")
@@ -181,6 +180,7 @@ async function overlayProjets(mesFiltres) {
     //On crée une boucle pour créer les élements du DOM
     for (let i = 0; i < Listes.length; i++){ 
         const elemFigure = document.createElement("figure")
+        elemFigure.setAttribute("data-id", Listes[i].id)
         const elemImg = document.createElement("img")
         elemImg.classList.add("smallfigure")
         elemImg.src = Listes[i].imageUrl
@@ -188,16 +188,35 @@ async function overlayProjets(mesFiltres) {
         a.setAttribute("href", "")
         a.classList.add("trash")
         const elemTrash = document.createElement("i")
-        elemTrash.classList.add("fa-solid", "fa-trash-can", "data-id")
-        //elemTrash.setAttribute("data-idnumber", Listes[i].id)
+        elemTrash.classList.add("fa-solid", "fa-trash-can")
         elemTrash.addEventListener("click", () => {
-            console.log(Listes[i].id)
+            let idProjet = Listes[i].id
+            supprProjet(idProjet)
         })
         elemFigure.appendChild(elemImg)
         elemFigure.appendChild(a)
         a.appendChild(elemTrash)
         ElemGallery.appendChild(elemFigure)
     }
+}
+//Fonction de suppression d'un projet
+async function supprProjet (e, idProjet) {
+    let figureId = e.target.dataset.id
+    console.log(idProjet)
+    console.log(figureId)
+    for (let i = 0; i < figureId.length; i++) {
+        if (figureId[i].dataset.id === idProjet){
+            console.log("tt")
+        }
+    }
+    // if (monToken !== undefined || monToken !== null){
+    //     const deleteProjet = await fetch(`http://localhost:5678/api/works/${idProjet}`, {
+    //         method: "DELETE",
+    //         headers: {
+    //             Authorization: `Bearer ${monToken}`,
+    //         },
+    //     })
+    // }
 }
 
 
