@@ -100,79 +100,41 @@
 			<input type="email" name="email" id="email">
 			<label for="message">Message</label>
 			<textarea name="message" id="message" cols="30" rows="10"></textarea>
-			<input type="submit" value="Envoyer">
+			<input type="submit" value="Envoyer" class="valid">
 		</form>
 	</section>
-	<aside class="overlay invisible">
-		<div class="overlaycontenu suppr">
-			<!-- <div class="icones">
-				<a href="" alt="Retour" title="Retour" class="retour invisible"><i class="fa-solid fa-arrow-left"></i></a>
-				<a href="" alt="Fermer fenêtre" title="Fermer fenêtre"><i class="fa-solid fa-xmark"></i></a>
-			</div> -->
-			<!-- <section class="over galerie"> -->
-				<!-- <h3>Galerie photo</h3> -->
-				<!-- <div class="overlay-figure"> -->
-					<!-- <figure>
-						<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina" class="smallfigure">
-						<a href="" alt="Suppression du projet" title="Suppression du projet" class="trash"><i class="fa-solid fa-trash-can"></i></a>
-					</figure>
-					<figure>
-						<img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V" class="smallfigure">
-						<a href="" alt="Suppression du projet" title="Suppression du projet" class="trash"><i class="fa-solid fa-trash-can"></i></a>
-					</figure>
-					<figure>
-						<img src="assets/images/restaurant-sushisen-londres.png" alt="Restaurant Sushisen - Londres" class="smallfigure">
-						<a href="" alt="Suppression du projet" title="Suppression du projet" class="trash"><i class="fa-solid fa-trash-can"></i></a>
-					</figure>
-					<figure>
-						<img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis" class="smallfigure">
-						<a href="" alt="Suppression du projet" title="Suppression du projet" class="trash"><i class="fa-solid fa-trash-can"></i></a>
-					</figure>
-					<figure>
-						<img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis" class="smallfigure">
-						<a href="" alt="Suppression du projet" title="Suppression du projet" class="trash"><i class="fa-solid fa-trash-can"></i></a>
-					</figure>
-					<figure>
-						<img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X" class="smallfigure">
-						<a href="" alt="Suppression du projet" title="Suppression du projet" class="trash"><i class="fa-solid fa-trash-can"></i></a>
-					</figure>
-					<figure>
-						<img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis" class="smallfigure">
-						<a href="" alt="Suppression du projet" title="Suppression du projet" class="trash"><i class="fa-solid fa-trash-can"></i></a>
-					</figure>
-					<figure>
-						<img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba" class="smallfigure">
-						<a href="" alt="Suppression du projet" title="Suppression du projet" class="trash"><i class="fa-solid fa-trash-can"></i></a>
-					</figure>
-					<figure>
-						<img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII" class="smallfigure">
-						<a href="" alt="Suppression du projet" title="Suppression du projet" class="trash"><i class="fa-solid fa-trash-can"></i></a>
-					</figure>
-					<figure>
-						<img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris" class="smallfigure">
-						<a href="" alt="Suppression du projet" title="Suppression du projet" class="trash"><i class="fa-solid fa-trash-can"></i></a>
-					</figure>
-					<figure>
-						<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi" class="smallfigure">
-						<a href="" alt="Suppression du projet" title="Suppression du projet" class="trash"><i class="fa-solid fa-trash-can"></i></a>
-					</figure> -->
-				<!-- </div> -->
-				<!-- <a href="" alt="Ajouter une photo" title="Ajouter une photo" class="ajoutPhoto">Ajouter une photo</a> -->
-			<!-- </section> -->
-		</div>
-		<div class="overlaycontenu ajout1 invisible">
+	<aside class="overlay">
+		<div class="overlaycontenu">
 			<div class="iconesajout">
-				<a href="" alt="Retour" title="Retour" class="retour"><i class="fa-solid fa-arrow-left"></i></a>
-				<a href="" alt="Fermer fenêtre" title="Fermer fenêtre" class="fermeture"><i class="fa-solid fa-xmark"></i></a>
+				<a href="" alt="Retour" title="Retour"><i class="fa-solid fa-arrow-left retour"></i></a>
+				<a href="" alt="Fermer fenêtre" title="Fermer fenêtre"><i class="fa-solid fa-xmark fermeture"></i></a>
 			</div>
 			<section class="over galerie">
 				<h3>Ajout photo</h3>
-				<div class="overlay-ajout">
-					<form>
-
+				<div class="overlay-formAjout">
+					<form action="" method="">
+						<div class="bordure-bas">
+							<div class="cadreAjout">
+								<i class="fa-regular fa-image i-image"></i>
+								<label class="file-hidden" for="fichier">
+									<span>+ Ajouter photo</span>
+									<input type="file" name="file" id="fichier">
+								</label>
+								<p class="taille-image">jpg. png. : 4mo max</p>
+							</div>
+							<div class="form-saisie">
+								<label for="titre">Titre</label>
+								<input type="text" name="Titre" id="titre" required />
+							</div>
+							<div class="form-saisie">
+								<label for="categorie">Catégorie</label>
+								<select type="select" name="Catégorie" id="categorie" required />
+								</select>
+							</div>
+						</div>
+						<input type="submit" value="Valider" class="ajoutPhoto" disabled>
 					</form>
 				</div>
-				<a href="" alt="Valider" title="Valider" class="ajoutPhoto">Valider</a>
 			</section>
 		</div>
 	</aside>

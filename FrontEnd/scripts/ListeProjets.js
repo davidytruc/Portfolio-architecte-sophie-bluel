@@ -135,7 +135,7 @@ document.querySelector(".modifs").addEventListener ("click", (e) => {
     overlay.innerHTML = ""
     overlay.innerHTML = ouvreOverlaySuppr()
 })
-//Fermeture de l'overlay en cliquant sur la partie grisée
+//Fermeture de l'overlay en cliquant sur la partie grisée ou  sur la croix
 document.querySelector(".overlay").addEventListener("click", (e) => {
     e.preventDefault()
     if (e.target.classList.contains("overlay") || e.target.classList.contains("fermeture")) {
@@ -153,7 +153,7 @@ function ouvreOverlaySuppr() {
     let monEntete = `
         <div class="overlaycontenu suppr">
 			<div class="icones">
-				<a href="" alt="Retour" title="Retour" class="retour invisible"><i class="fa-solid fa-arrow-left"></i></a>
+				<a href="" alt="Retour" title="Retour" class="invisible"><i class="fa-solid fa-arrow-left retour"></i></a>
 				<a href="" alt="Fermer fenêtre" title="Fermer fenêtre"><i class="fa-solid fa-xmark fermeture"></i></a>
 			</div>
             <section class="over galerie">
@@ -162,7 +162,7 @@ function ouvreOverlaySuppr() {
     `
     let leReste = `
 				</div>
-				<a href="" alt="Ajouter une photo" title="Ajouter une photo" class="ajoutPhoto">Ajouter une photo</a>
+				<a href="" alt="Ajouter une photo" title="Ajouter une photo" class="btnSupprProjet">Ajouter une photo</a>
 			</section>
 		</div>
     `

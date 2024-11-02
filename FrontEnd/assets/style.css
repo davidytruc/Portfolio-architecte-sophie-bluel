@@ -274,7 +274,7 @@ li:hover {
 /******Fin CSS formulaire de connexion page login.html********/
 
 
-input[type="submit"]{
+#contact input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
@@ -353,6 +353,13 @@ footer nav ul {
 	border-bottom: solid 1px #1D6154;
 }
 
+.overlay-formAjout {
+	width: 80%;
+	margin: auto;
+    margin-top: 25px;
+	padding-bottom: 10px;
+}
+
 .overlay-figure figure {
 	position: relative;
 }
@@ -372,12 +379,73 @@ footer nav ul {
 	height: 100px;
 }
 
-.ajoutPhoto {
+.btnSupprProjet {
 	display: block;
 	width: 30%;
 	margin: auto;
 	padding: 10px 30px;
 	background-color: #1D6154;
+	border-radius: 20px;
+	color: white;
+	text-align: center;
+}
+.bordure-bas {
+	margin-bottom: 20px;
+	border-bottom: solid 1px #1D6154;
+}
+.cadreAjout {
+	display: flex;
+	flex-direction: column;
+	background-color: #E8F1F6;
+	text-align: center;
+	padding: 10px;
+}
+
+.i-image {
+	display: block;
+	margin-bottom: 10px;
+	color: #B9C5CC;
+	font-size: 400%;
+}
+
+/* On cache l'input*/
+.file-hidden {
+	display: block;
+	margin-top: 4px;
+}
+.file-hidden input {
+	display: none;
+}
+.file-hidden span {
+	padding: 8px 20px;
+	font-size: smaller;
+	background: #CBD6DC;
+	color: #43748F;
+	cursor: pointer;
+	border-radius: 25px;
+}
+.taille-image {
+	margin-top: 15px;
+	color: red;
+	font-size: 50%;
+}
+.form-saisie {
+	margin: 25px 0;
+	display: flex;
+	flex-direction: column;
+}
+.form-saisie label{
+	margin-bottom: 6px;
+	font-family: 'Work Sans';
+	font-size: 80%;
+}
+.ajoutPhoto {
+	display: block;
+	width: 50%;
+	margin: auto;
+	padding: 10px 30px;
+	background-color: rgba(29, 97, 84, 0.5);
+	border: none;
 	border-radius: 20px;
 	color: white;
 	text-align: center;
