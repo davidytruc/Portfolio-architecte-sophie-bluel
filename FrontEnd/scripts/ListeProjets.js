@@ -1,4 +1,5 @@
-//Déclaration variable
+/*DECLARATIONS VARIABLES ET FONCTIONS ASSOCIEES*************************************************************/
+
 let logout = document.querySelector(".logout")
 /*On regarde si le localstorage contient le token*/
 let monToken = dataToken()
@@ -6,12 +7,22 @@ let monToken = dataToken()
 function dataToken(){
     return window.localStorage.getItem("monToken")
 }
+//Variable contenant les données API Catégories
+let Categories = await dataCategories()
 // Récupération des données catégories via l'API
 async function dataCategories () {
     let dataCategories = await fetch("http://localhost:5678/api/categories")
     let categories = await dataCategories.json()
     return categories
 }
+
+/**********************************************************************************************************/
+
+
+
+
+/*FONCTIONS DE CREATION DU DOM A L'OUVERTURE DE LA PAGE*****************************************************/
+
 //Fonction de création des balises principales dans la balise id portfolio
 function creationDomPortfolio (){
     let login = document.querySelector(".login")
@@ -39,12 +50,19 @@ function creationDomPortfolio (){
         </div>
         <div class="filtres invisible"></div>
         <div class="gallery"></div>`
+        eventModifs()
     }
 }
-//****Cette partie de code me permet de créer la liste des catégories pour création des boutons filtre************
+//Ouverture de l'overlay
+function eventModifs () {
+    let eventModifsResult = document.querySelector(".modifs").addEventListener ("click", (e) => {
+    e.preventDefault()
+    ouvreOverlaySuppr()
+    })
+    return eventModifsResult
+}
+//Cette partie de code me permet de créer la liste des catégories pour création des boutons filtre
 async function ListeCategories() {
-
-    let Categories = await dataCategories()
 
     //Récupération de la balise dans laquelle créer les boutons de filtres
     const elemFiltres = document.querySelector(".filtres")
@@ -76,7 +94,7 @@ async function GetWorks(autres){
         return ListesFiltrees
     }
 }
-//************************Cette partie de code me permet d'afficher dynamiquement tous les projets*****************
+//Cette partie de code me permet d'afficher dynamiquement tous les projets
 async function ListeProjets(mesFiltres) {
 
     const Listes = await GetWorks(mesFiltres)
@@ -98,12 +116,37 @@ async function ListeProjets(mesFiltres) {
     }
 }
 
-//*********************Ouverture de la page**********************************************/
+/**********************************************************************************************************/
+
+
+
+
+//OUVERTURE DE LA PAGE*************************************************************************************/
+
 creationDomPortfolio()
 ListeCategories()
 ListeProjets("Tous")
 
-//*********************Création des fonctions de filtres et tris*************************/
+/**********************************************************************************************************/
+
+
+
+
+//DECONNEXION**********************************************************************************************/
+
+logout.addEventListener("click", (e) => {
+    e.preventDefault()
+    window.localStorage.removeItem("monToken")
+    window.location.href = "index.html"
+})
+
+/**********************************************************************************************************/
+
+
+
+
+//CREATION DES FONCTIONS DE FILTRE*************************************************************************/
+
 const choixFiltre = document.querySelector(".filtres")
 choixFiltre.addEventListener("click", async (event) => {
     event.preventDefault()
@@ -121,20 +164,14 @@ function supClassSelection() {
         mesFiltres[i].classList.remove("selection")
     }
 }
-//Déconnexion
-logout.addEventListener("click", (e) => {
-    e.preventDefault()
-    window.localStorage.removeItem("monToken")
-    window.location.href = "index.html"
-})
-//Ouverture de l'overlay
-document.querySelector(".modifs").addEventListener ("click", (e) => {
-    e.preventDefault()
-    let overlay = document.querySelector(".overlay")
-    overlay.classList.remove("invisible")
-    overlay.innerHTML = ""
-    overlay.innerHTML = ouvreOverlaySuppr()
-})
+
+/**********************************************************************************************************/
+
+
+
+
+//GESTION DES FENETRES MODALES*****************************************************************************/
+
 //Fermeture de l'overlay en cliquant sur la partie grisée ou  sur la croix
 document.querySelector(".overlay").addEventListener("click", (e) => {
     e.preventDefault()
@@ -142,15 +179,11 @@ document.querySelector(".overlay").addEventListener("click", (e) => {
         document.querySelector(".overlay").classList.add("invisible")
     }
 })
-// //Bascule vers l'overlay ajout photo
-// document.querySelector(".ajoutPhoto").addEventListener ("click", (e) => {
-//     e.preventDefault()
-//     document.querySelector(".suppr").classList.add("invisible")
-//     document.querySelector(".ajout1").classList.remove("invisible")
-// })
-// //Fonction remplissage overlay suppr
+//Bascule vers l'overlay ajout photo
 function ouvreOverlaySuppr() {
-    let monEntete = `
+    let overlay = document.querySelector(".overlay")
+    overlay.classList.remove("invisible")
+    overlay.innerHTML = `
         <div class="overlaycontenu suppr">
 			<div class="icones">
 				<a href="" alt="Retour" title="Retour" class="invisible"><i class="fa-solid fa-arrow-left retour"></i></a>
@@ -159,14 +192,13 @@ function ouvreOverlaySuppr() {
             <section class="over galerie">
 				<h3>Galerie photo</h3>
 				<div class="overlay-figure">
-    `
-    let leReste = `
 				</div>
 				<a href="" alt="Ajouter une photo" title="Ajouter une photo" class="btnSupprProjet">Ajouter une photo</a>
 			</section>
 		</div>
     `
-    return monEntete + overlayProjets("Tous") + leReste
+    overlayProjets("Tous")
+    eventbtnSupprProjet ()
 }
 //Fonction appel API pour génération DOM overlay suppr
 async function overlayProjets(mesFiltres) {
@@ -199,6 +231,50 @@ async function overlayProjets(mesFiltres) {
         ElemGallery.appendChild(elemFigure)
     }
 }
+//Fonction event btnSupprProjet
+function eventbtnSupprProjet () {
+    let btnSupprProjet = document.querySelector(".btnSupprProjet").addEventListener ("click", (e) => {
+    e.preventDefault()
+    let overlay = document.querySelector(".overlay")
+    overlay.classList.remove("invisible")
+    overlay.innerHTML = `
+        <div class="overlaycontenu">
+			<div class="iconesajout">
+				<a href="" alt="Retour" title="Retour"><i class="fa-solid fa-arrow-left retour"></i></a>
+				<a href="" alt="Fermer fenêtre" title="Fermer fenêtre"><i class="fa-solid fa-xmark fermeture"></i></a>
+			</div>
+			<section class="over galerie">
+				<h3>Ajout photo</h3>
+				<div class="overlay-formAjout">
+					<form action="" method="">
+						<div class="bordure-bas">
+							<div class="cadreAjout">
+								<i class="fa-regular fa-image i-image"></i>
+								<label class="file-hidden" for="fichier">
+									<span>+ Ajouter photo</span>
+									<input type="file" name="file" id="fichier">
+								</label>
+								<p class="taille-image">jpg. png. : 4mo max</p>
+							</div>
+							<div class="form-saisie">
+								<label for="titre">Titre</label>
+								<input type="text" name="Titre" id="titre" required />
+							</div>
+							<div class="form-saisie">
+								<label for="categorie">Catégorie</label>
+								<select type="select" name="Catégorie" id="categorie" required />
+				                </select>
+							</div>
+						</div>
+						<input type="submit" value="Valider" class="ajoutPhoto" disabled>
+					</form>
+				</div>
+			</section>
+		</div>
+    `
+    })
+    return btnSupprProjet
+}
 //Fonction de suppression d'un projet
 async function supprProjet (e, idProjet) {
     let figureId = e.target.dataset.id
@@ -218,5 +294,3 @@ async function supprProjet (e, idProjet) {
     //     })
     // }
 }
-
-

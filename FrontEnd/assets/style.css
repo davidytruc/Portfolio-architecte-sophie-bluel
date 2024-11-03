@@ -274,7 +274,7 @@ li:hover {
 /******Fin CSS formulaire de connexion page login.html********/
 
 
-#contact input[type="submit"]{
+#contact input[type="submit"], #login input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
 	color: white;
