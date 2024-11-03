@@ -224,11 +224,31 @@ async function overlayProjets(mesFiltres) {
         elemTrash.addEventListener("click", () => {
             let idProjet = Listes[i].id
             supprProjet(idProjet)
+            supprFigureProjet (idProjet)
         })
         elemFigure.appendChild(elemImg)
         elemFigure.appendChild(a)
         a.appendChild(elemTrash)
         ElemGallery.appendChild(elemFigure)
+    }
+}
+//Fonction de suppression d'un projet
+async function supprProjet (idProjet) {
+    if (monToken !== undefined || monToken !== null){
+        const deleteProjet = await fetch(`http://localhost:5678/api/works/${idProjet}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${monToken}`,
+            },
+        })
+    }
+}
+function supprFigureProjet (idProjet) {
+    let figureProjet = document.querySelectorAll(".overlay-figure figure")
+    for (let i = 0; i < figureProjet.length; i++) {
+        if (figureProjet[i].dataset.id == idProjet) {
+            figureProjet[i].remove()
+        }
     }
 }
 //Fonction event btnSupprProjet
@@ -292,23 +312,4 @@ function listeDerCategories () {
         optionCategories.innerText = Categories[i].name
         idCategories.appendChild(optionCategories)
     }
-}
-//Fonction de suppression d'un projet
-async function supprProjet (e, idProjet) {
-    let figureId = e.target.dataset.id
-    console.log(idProjet)
-    console.log(figureId)
-    for (let i = 0; i < figureId.length; i++) {
-        if (figureId[i].dataset.id === idProjet){
-            console.log("tt")
-        }
-    }
-    // if (monToken !== undefined || monToken !== null){
-    //     const deleteProjet = await fetch(`http://localhost:5678/api/works/${idProjet}`, {
-    //         method: "DELETE",
-    //         headers: {
-    //             Authorization: `Bearer ${monToken}`,
-    //         },
-    //     })
-    // }
 }
