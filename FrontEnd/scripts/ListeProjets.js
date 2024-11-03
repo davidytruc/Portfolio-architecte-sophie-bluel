@@ -258,11 +258,11 @@ function eventbtnSupprProjet () {
 							</div>
 							<div class="form-saisie">
 								<label for="titre">Titre</label>
-								<input type="text" name="Titre" id="titre" required />
+								<input type="text" name="Titre" id="titre" class="zoneAjout" required/>
 							</div>
 							<div class="form-saisie">
 								<label for="categorie">Catégorie</label>
-								<select type="select" name="Catégorie" id="categorie" required />
+								<select type="select" name="Catégorie" id="categorie" class="zoneAjout" required/>
 				                </select>
 							</div>
 						</div>
@@ -272,8 +272,26 @@ function eventbtnSupprProjet () {
 			</section>
 		</div>
     `
+    listeDerCategories ()
     })
     return btnSupprProjet
+}
+//Fonction liste déroulante catégories
+function listeDerCategories () {
+    //Récupération de la balise dans laquelle créer les boutons option
+    const idCategories = document.getElementById("categorie")
+    const vide = document.createElement("option")
+    vide.setAttribute("value", "")
+    vide.innerText = ""
+    idCategories.appendChild(vide)
+
+    //On crée une boucle pour créer les élements du DOM
+    for (let i = 0; i < Categories.length; i++){   
+        const optionCategories = document.createElement("option")
+        optionCategories.setAttribute("value", Categories[i].name)
+        optionCategories.innerText = Categories[i].name
+        idCategories.appendChild(optionCategories)
+    }
 }
 //Fonction de suppression d'un projet
 async function supprProjet (e, idProjet) {
