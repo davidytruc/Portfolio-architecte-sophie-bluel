@@ -36,7 +36,8 @@ function creationDomPortfolio (){
             <h2>Mes projets</h2>
         </div>
         <div class="filtres"></div>
-        <div class="gallery"></div>`
+        <div class="gallery"></div>
+        `
     } else {
         logout.classList.remove("invisible")
         login.classList.add("invisible")
@@ -256,43 +257,46 @@ function eventbtnSupprProjet () {
     let btnSupprProjet = document.querySelector(".btnSupprProjet").addEventListener ("click", (e) => {
     e.preventDefault()
     let overlay = document.querySelector(".overlay")
-    overlay.classList.remove("invisible")
-    overlay.innerHTML = `
+    overlay.classList.add("invisible")
+    let overlay2 = document.querySelector(".overlayForm")
+    overlay2.classList.remove("invisible")
+    overlay2.innerHTML = `
         <div class="overlaycontenu">
-			<div class="iconesajout">
-				<a href="" alt="Retour" title="Retour"><i class="fa-solid fa-arrow-left retour"></i></a>
-				<a href="" alt="Fermer fenêtre" title="Fermer fenêtre"><i class="fa-solid fa-xmark fermeture"></i></a>
-			</div>
-			<section class="over galerie">
-				<h3>Ajout photo</h3>
-				<div class="overlay-formAjout">
-					<form action="" method="">
-						<div class="bordure-bas">
-							<div class="cadreAjout">
-								<i class="fa-regular fa-image i-image"></i>
-								<label class="file-hidden" for="fichier">
-									<span>+ Ajouter photo</span>
-									<input type="file" name="file" id="fichier">
-								</label>
-								<p class="taille-image">jpg. png. : 4mo max</p>
-							</div>
-							<div class="form-saisie">
-								<label for="titre">Titre</label>
-								<input type="text" name="Titre" id="titre" class="zoneAjout" required/>
-							</div>
-							<div class="form-saisie">
-								<label for="categorie">Catégorie</label>
-								<select type="select" name="Catégorie" id="categorie" class="zoneAjout" required/>
-				                </select>
-							</div>
-						</div>
-						<input type="submit" value="Valider" class="ajoutPhoto" disabled>
-					</form>
-				</div>
-			</section>
-		</div>
+            <div class="iconesajout">
+                <a href="" alt="Retour" title="Retour"><i class="fa-solid fa-arrow-left retour"></i></a>
+                <a href="" alt="Fermer fenêtre" title="Fermer fenêtre"><i class="fa-solid fa-xmark fermeture"></i></a>
+            </div>
+            <section class="over galerie">
+                <h3>Ajout photo</h3>
+                <div class="overlay-formAjout">
+                    <form action="" method="">
+                        <div class="bordure-bas">
+                            <div class="cadreAjout">
+                                <div class="imgProjetAjout invisible"><img src="" alt="" title=""></div>
+                                <i class="fa-regular fa-image i-image"></i>
+                                <div class="file-hidden">
+                                    <label for="monfichier">+ Ajouter photo</label>
+                                    <input type="file" class="invisible" name="file" id="monfichier">
+                                </div>
+                                <p class="taille-image">jpg. png. : 4mo max</p>
+                            </div>
+                            <div class="form-saisie">
+                                <label for="titre">Titre</label>
+                                <input type="text" name="Titre" id="titre" class="zoneAjout" required/>
+                            </div>
+                            <div class="form-saisie">
+                                <label for="categorie">Catégorie</label>
+                                <select type="select" name="Catégorie" id="categorie" class="zoneAjout" required/></select>
+                            </div>
+                        </div>
+                        <input type="submit" value="Valider" class="ajoutPhoto" disabled>
+                    </form>
+                </div>
+            </section>
+        </div>
     `
     listeDerCategories ()
+    ajouterPhoto()
     })
     return btnSupprProjet
 }
@@ -312,4 +316,20 @@ function listeDerCategories () {
         optionCategories.innerText = Categories[i].name
         idCategories.appendChild(optionCategories)
     }
+}
+//Fonction + Ajouter photo
+function ajouterPhoto() {
+    let btnAjouterPhoto = document.getElementById("monfichier").addEventListener("change", (e) => {
+        let maPhoto = document.querySelector(".imgProjetAjout")
+        maPhoto.classList.remove("invisible")
+        if (e.target.files[0]) {
+            maPhoto.querySelector("img").src = window.URL.createObjectURL(e.target.files[0])
+            document.querySelector(".cadreAjout i").remove()
+            document.querySelector(".file-hidden").remove()
+            document.querySelector(".taille-image").remove()
+            document.querySelector(".cadreAjout").classList.add("paspadding")
+            document.getElementById("titre").focus()
+        }
+    })
+    return btnAjouterPhoto
 }

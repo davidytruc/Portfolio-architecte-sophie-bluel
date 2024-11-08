@@ -292,7 +292,7 @@ footer nav ul {
 
 /**********Gestion overlay**********************/
 
-.overlay {
+.overlay, .overlayForm {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -399,24 +399,24 @@ footer nav ul {
 	background-color: #E8F1F6;
 	text-align: center;
 	padding: 10px;
+	height: 140px;
+}
+
+.paspadding {
+	padding: 0;
 }
 
 .i-image {
 	display: block;
-	margin-bottom: 10px;
+	padding: 0 0 15px 0;
 	color: #B9C5CC;
-	font-size: 400%;
+	font-size: 500%;
 }
 
-/* On cache l'input*/
 .file-hidden {
-	display: block;
-	margin-top: 4px;
+	margin-bottom: 5px;
 }
-.file-hidden input {
-	display: none;
-}
-.file-hidden span {
+.file-hidden label {
 	padding: 8px 20px;
 	font-size: smaller;
 	background: #CBD6DC;
@@ -425,9 +425,9 @@ footer nav ul {
 	border-radius: 25px;
 }
 .taille-image {
-	margin-top: 15px;
+	padding-top: 15px;
 	color: red;
-	font-size: 50%;
+	font-size: 60%;
 }
 .form-saisie {
 	margin: 25px 0;
@@ -457,6 +457,10 @@ footer nav ul {
 	border: none;
 	background-color: white;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+.imgProjetAjout img{
+	height: 140px;
 }
 
 /**********Ajout de la class invisible**********/
