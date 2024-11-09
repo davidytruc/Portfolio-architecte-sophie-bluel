@@ -15,6 +15,10 @@ async function dataCategories () {
     let categories = await dataCategories.json()
     return categories
 }
+//Variables de validation du formulaire ajout
+let compteurPhoto = 0
+let compteurTitre = 0
+let compteurCategorie = 0
 
 /**********************************************************************************************************/
 
@@ -173,13 +177,6 @@ function supClassSelection() {
 
 //GESTION DES FENETRES MODALES*****************************************************************************/
 
-//Fermeture de l'overlay en cliquant sur la partie grisée ou  sur la croix
-document.querySelector(".overlay").addEventListener("click", (e) => {
-    e.preventDefault()
-    if (e.target.classList.contains("overlay") || e.target.classList.contains("fermeture")) {
-        document.querySelector(".overlay").classList.add("invisible")
-    }
-})
 //Bascule vers l'overlay ajout photo
 function ouvreOverlaySuppr() {
     let overlay = document.querySelector(".overlay")
@@ -258,9 +255,10 @@ function eventbtnSupprProjet () {
     e.preventDefault()
     let overlay = document.querySelector(".overlay")
     overlay.classList.add("invisible")
-    let overlay2 = document.querySelector(".overlayForm")
-    overlay2.classList.remove("invisible")
-    overlay2.innerHTML = `
+    overlay.innerHTML = ""
+    let overlayForm = document.querySelector(".overlayForm")
+    overlayForm.classList.remove("invisible")
+    overlayForm.innerHTML = `
         <div class="overlaycontenu">
             <div class="iconesajout">
                 <a href="" alt="Retour" title="Retour"><i class="fa-solid fa-arrow-left retour"></i></a>
@@ -275,7 +273,7 @@ function eventbtnSupprProjet () {
                                 <div class="imgProjetAjout invisible"><img src="" alt="" title=""></div>
                                 <i class="fa-regular fa-image i-image"></i>
                                 <div class="file-hidden">
-                                    <label for="monfichier">+ Ajouter photo</label>
+                                    <label for="monfichier" class="picture">+ Ajouter photo</label>
                                     <input type="file" class="invisible" name="file" id="monfichier">
                                 </div>
                                 <p class="taille-image">jpg. png. : 4mo max</p>
@@ -289,7 +287,7 @@ function eventbtnSupprProjet () {
                                 <select type="select" name="Catégorie" id="categorie" class="zoneAjout" required/></select>
                             </div>
                         </div>
-                        <input type="submit" value="Valider" class="ajoutPhoto" disabled>
+                        <input type="submit" value="Valider" class="ajoutPhoto" disabled="true">
                     </form>
                 </div>
             </section>
@@ -297,6 +295,8 @@ function eventbtnSupprProjet () {
     `
     listeDerCategories ()
     ajouterPhoto()
+    ajoutTitre()
+    ajoutCategorie()
     })
     return btnSupprProjet
 }
@@ -329,7 +329,55 @@ function ajouterPhoto() {
             document.querySelector(".taille-image").remove()
             document.querySelector(".cadreAjout").classList.add("paspadding")
             document.getElementById("titre").focus()
+            compteurPhoto = 0
+            compteurPhoto ++
+            checkFormOkay ()
         }
     })
     return btnAjouterPhoto
 }
+//Fonction ajouter Titre
+function ajoutTitre() {
+    let monAjoutTitre = document.getElementById("titre").addEventListener("change", () => {
+        if (document.getElementById("titre").value !== "") {
+            compteurTitre = 0
+            compteurTitre++
+            checkFormOkay ()
+        }
+    })
+    return monAjoutTitre
+}
+//Fonction ajouter Catégorie
+function ajoutCategorie() {
+    let monAjoutCategorie = document.getElementById("categorie").addEventListener("change", () => {
+        if (document.getElementById("categorie").value !== "") {
+            compteurCategorie = 0
+            compteurCategorie++
+            checkFormOkay ()
+        }
+    })
+    return monAjoutCategorie
+}
+//Fonction de vérification que le formulaire est bien rempli
+function checkFormOkay () {
+    if (compteurCategorie + compteurPhoto + compteurTitre == 3) {
+        console.log("formulaire rempli")
+        document.querySelector(".ajoutPhoto").disabled = false
+        document.querySelector(".ajoutPhoto").classList.add("valideForm")
+    }
+}
+//Fermeture des overlay en cliquant sur la partie grisée ou  sur la croix
+document.querySelector(".overlay").addEventListener("onclick", (e) => {
+    e.preventDefault()
+    if (e.target.classList.contains("overlay") || e.target.classList.contains("fermeture")) {
+        document.querySelector(".overlay").innerHTML = ""
+        document.querySelector(".overlay").classList.add("invisible")
+    }
+})
+document.querySelector(".overlayForm").addEventListener("onclick", (e) => {
+    e.preventDefault()
+    if (e.target.classList.contains("overlayForm") || e.target.classList.contains("fermeture")) {
+        document.querySelector(".overlayForm").innerHTML = ""
+        document.querySelector(".overlayForm").classList.add("invisible")
+    }
+})
