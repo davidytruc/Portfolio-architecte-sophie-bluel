@@ -182,7 +182,7 @@ function ouvreOverlaySuppr() {
     let overlay = document.querySelector(".overlay")
     overlay.classList.remove("invisible")
     overlay.innerHTML = `
-        <div class="overlaycontenu suppr">
+        <div class="overlaycontenu">
 			<div class="icones">
 				<a href="" alt="Retour" title="Retour" class="invisible"><i class="fa-solid fa-arrow-left retour"></i></a>
 				<a href="" alt="Fermer fenêtre" title="Fermer fenêtre"><i class="fa-solid fa-xmark fermeture"></i></a>
@@ -196,6 +196,7 @@ function ouvreOverlaySuppr() {
 		</div>
     `
     overlayProjets("Tous")
+    fermeOverlay()
     eventbtnSupprProjet ()
 }
 //Fonction appel API pour génération DOM overlay suppr
@@ -274,7 +275,7 @@ function eventbtnSupprProjet () {
                                 <i class="fa-regular fa-image i-image"></i>
                                 <div class="file-hidden">
                                     <label for="monfichier" class="picture">+ Ajouter photo</label>
-                                    <input type="file" class="invisible" name="file" id="monfichier">
+                                    <input type="file" class="invisible" name="file" id="monfichier" required>
                                 </div>
                                 <p class="taille-image">jpg. png. : 4mo max</p>
                             </div>
@@ -297,6 +298,8 @@ function eventbtnSupprProjet () {
     ajouterPhoto()
     ajoutTitre()
     ajoutCategorie()
+    fermeOverlayForm()
+    // clicAjoutPhoto ()
     })
     return btnSupprProjet
 }
@@ -361,23 +364,77 @@ function ajoutCategorie() {
 //Fonction de vérification que le formulaire est bien rempli
 function checkFormOkay () {
     if (compteurCategorie + compteurPhoto + compteurTitre == 3) {
-        console.log("formulaire rempli")
         document.querySelector(".ajoutPhoto").disabled = false
         document.querySelector(".ajoutPhoto").classList.add("valideForm")
     }
+    postNewProject()
+}
+//function post nouveau projet
+async function postNewProject() {
+    //Récupération des éléments du formulaire
+    let formulaireAjout = document.querySelector(".overlay-formAjout form")
+    let maPhoto = document.querySelector(".imgProjetAjout img")
+    let maPhotoUrl = maPhoto.src
+    let titre = document.getElementById("titre")
+    let categorie = document.getElementById("categorie")
+
+    // Lancement fonction sur soummission formulaire
+    formulaireAjout.addEventListener("submit", async (event) => {
+        event.preventDefault()
+        //On crée l'objet de saisie email et password
+        let postAjout = {
+            imageUrl: maPhotoUrl,
+            title: titre.value,
+            categoryId: categorie.value
+        }
+        //On crée l'objet de la charge utile
+        const chargeUtile = JSON.stringify(postAjout)
+        //On envoie à l'aide de fetch
+        let datas = await fetch("http://localhost:5678/api/works", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${monToken}`
+            },
+            body: chargeUtile
+        })
+    })
 }
 //Fermeture des overlay en cliquant sur la partie grisée ou  sur la croix
-document.querySelector(".overlay").addEventListener("onclick", (e) => {
-    e.preventDefault()
-    if (e.target.classList.contains("overlay") || e.target.classList.contains("fermeture")) {
-        document.querySelector(".overlay").innerHTML = ""
-        document.querySelector(".overlay").classList.add("invisible")
-    }
-})
-document.querySelector(".overlayForm").addEventListener("onclick", (e) => {
-    e.preventDefault()
-    if (e.target.classList.contains("overlayForm") || e.target.classList.contains("fermeture")) {
-        document.querySelector(".overlayForm").innerHTML = ""
-        document.querySelector(".overlayForm").classList.add("invisible")
-    }
-})
+function fermeOverlay () {
+    let monRetour = document.querySelector(".overlay").addEventListener("click", (e) => {
+        //e.preventDefault()
+        if (e.target.classList.contains("overlay") || e.target.classList.contains("fermeture")) {
+            document.querySelector(".overlay").innerHTML = ""
+            document.querySelector(".overlay").classList.add("invisible")
+        }
+    })
+    return monRetour
+}
+function fermeOverlayForm () {
+    let monRetour = document.querySelector(".overlayForm").addEventListener("click", (e) => {
+        //e.preventDefault()
+        // if (e.target.classList.contains("picture")) {
+        //     console.log("toto")
+        //     document.querySelector(".picture").click()
+        //     document.getElementById("monfichier").click()
+        //     e.stopImmediatePropagation()
+        // }
+        if (e.target.classList.contains("overlayForm") || e.target.classList.contains("fermeture")) {
+            document.querySelector(".overlayForm").innerHTML = ""
+            document.querySelector(".overlayForm").classList.add("invisible")
+        }
+    })
+    return monRetour
+}
+// function clicAjoutPhoto () {
+//     let monAjoutPhoto = document.querySelector(".picture").add.addEventListener ("onclic", (e) => {
+//         e.preventDefault()
+//         // e.stopPropagation()
+//     })
+// }
+// document.querySelector(".overlay").addEventListener("click", (e) => {
+//     e.preventDefault()
+//     document.querySelector(".overlay").innerHTML = ""
+//     document.querySelector(".overlay").classList.add("invisible")
+//     e.stopImmediatePropagation()
+// })
