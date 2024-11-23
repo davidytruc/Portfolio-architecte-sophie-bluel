@@ -15,11 +15,9 @@ async function dataCategories () {
     let categories = await dataCategories.json()
     return categories
 }
-//Variables de validation du formulaire ajout
-let compteurPhoto = 0
-let compteurTitre = 0
-let compteurCategorie = 0
-
+let compteurPhoto = ""
+let compteurCategorie = ""
+let compteurTitre = ""
 /**********************************************************************************************************/
 
 
@@ -93,7 +91,7 @@ async function GetWorks(autres){
     if (autres === "Tous") {
         return Listes
     } else {
-        const ListesFiltrees = Listes.filter(function (projet){
+        const ListesFiltrees = Listes.filter(function (projet) {
             return projet.category.name === autres
         })
         return ListesFiltrees
@@ -177,8 +175,11 @@ function supClassSelection() {
 
 //GESTION DES FENETRES MODALES*****************************************************************************/
 
-//Bascule vers l'overlay ajout photo
+//Bascule vers l'overlay suppr projets
 function ouvreOverlaySuppr() {
+    let overlayForm = document.querySelector(".overlayForm")
+    overlayForm.classList.add("invisible")
+    overlayForm.innerHTML = ""
     let overlay = document.querySelector(".overlay")
     overlay.classList.remove("invisible")
     overlay.innerHTML = `
@@ -197,7 +198,7 @@ function ouvreOverlaySuppr() {
     `
     overlayProjets("Tous")
     fermeOverlay()
-    eventbtnSupprProjet ()
+    ouvreOverlayForm ()
 }
 //Fonction appel API pour génération DOM overlay suppr
 async function overlayProjets(mesFiltres) {
@@ -220,7 +221,8 @@ async function overlayProjets(mesFiltres) {
         a.classList.add("trash")
         const elemTrash = document.createElement("i")
         elemTrash.classList.add("fa-solid", "fa-trash-can")
-        elemTrash.addEventListener("click", () => {
+        elemTrash.addEventListener("click", (e) => {
+            e.preventDefault()
             let idProjet = Listes[i].id
             supprProjet(idProjet)
             supprFigureProjet (idProjet)
@@ -250,9 +252,9 @@ function supprFigureProjet (idProjet) {
         }
     }
 }
-//Fonction event btnSupprProjet
-function eventbtnSupprProjet () {
-    let btnSupprProjet = document.querySelector(".btnSupprProjet").addEventListener ("click", (e) => {
+//Fonction ouvre l'overlayForm pour ajout de projets sur la balise permettant d'ajouter une photo
+function ouvreOverlayForm () {
+    let ouvreOverlayForm = document.querySelector(".btnSupprProjet").addEventListener ("click", (e) => {
     e.preventDefault()
     let overlay = document.querySelector(".overlay")
     overlay.classList.add("invisible")
@@ -268,14 +270,14 @@ function eventbtnSupprProjet () {
             <section class="over galerie">
                 <h3>Ajout photo</h3>
                 <div class="overlay-formAjout">
-                    <form action="" method="">
+                    <form action="" method="post">
                         <div class="bordure-bas">
                             <div class="cadreAjout">
                                 <div class="imgProjetAjout invisible"><img src="" alt="" title=""></div>
                                 <i class="fa-regular fa-image i-image"></i>
                                 <div class="file-hidden">
                                     <label for="monfichier" class="picture">+ Ajouter photo</label>
-                                    <input type="file" class="invisible" name="file" id="monfichier" required>
+                                    <input type="file" name="file" id="monfichier" required hidden>
                                 </div>
                                 <p class="taille-image">jpg. png. : 4mo max</p>
                             </div>
@@ -285,23 +287,24 @@ function eventbtnSupprProjet () {
                             </div>
                             <div class="form-saisie">
                                 <label for="categorie">Catégorie</label>
-                                <select type="select" name="Catégorie" id="categorie" class="zoneAjout" required/></select>
+                                <select type="select" name="Catégorie" id="categorie" class="zoneAjout" required></select>
                             </div>
                         </div>
-                        <input type="submit" value="Valider" class="ajoutPhoto" disabled="true">
+                        <input type="submit" value="Valider" class="ajoutPhoto" disabled>
                     </form>
                 </div>
             </section>
         </div>
     `
+    fermeOverlayForm()
+    retourOverlay()
     listeDerCategories ()
+    postNewProject()
     ajouterPhoto()
     ajoutTitre()
     ajoutCategorie()
-    fermeOverlayForm()
-    // clicAjoutPhoto ()
     })
-    return btnSupprProjet
+    return ouvreOverlayForm
 }
 //Fonction liste déroulante catégories
 function listeDerCategories () {
@@ -315,25 +318,24 @@ function listeDerCategories () {
     //On crée une boucle pour créer les élements du DOM
     for (let i = 0; i < Categories.length; i++){   
         const optionCategories = document.createElement("option")
-        optionCategories.setAttribute("value", Categories[i].name)
+        optionCategories.setAttribute("value", Categories[i].id)
         optionCategories.innerText = Categories[i].name
         idCategories.appendChild(optionCategories)
     }
 }
 //Fonction + Ajouter photo
 function ajouterPhoto() {
-    let btnAjouterPhoto = document.getElementById("monfichier").addEventListener("change", (e) => {
+    let btnAjouterPhoto = document.getElementById("monfichier").addEventListener("input", (e) => {
         let maPhoto = document.querySelector(".imgProjetAjout")
         maPhoto.classList.remove("invisible")
         if (e.target.files[0]) {
             maPhoto.querySelector("img").src = window.URL.createObjectURL(e.target.files[0])
             document.querySelector(".cadreAjout i").remove()
-            document.querySelector(".file-hidden").remove()
+            document.querySelector(".file-hidden").classList.add("invisible")
             document.querySelector(".taille-image").remove()
             document.querySelector(".cadreAjout").classList.add("paspadding")
             document.getElementById("titre").focus()
-            compteurPhoto = 0
-            compteurPhoto ++
+            compteurPhoto = 1
             checkFormOkay ()
         }
     })
@@ -343,8 +345,7 @@ function ajouterPhoto() {
 function ajoutTitre() {
     let monAjoutTitre = document.getElementById("titre").addEventListener("change", () => {
         if (document.getElementById("titre").value !== "") {
-            compteurTitre = 0
-            compteurTitre++
+            compteurTitre = 1
             checkFormOkay ()
         }
     })
@@ -354,8 +355,7 @@ function ajoutTitre() {
 function ajoutCategorie() {
     let monAjoutCategorie = document.getElementById("categorie").addEventListener("change", () => {
         if (document.getElementById("categorie").value !== "") {
-            compteurCategorie = 0
-            compteurCategorie++
+            compteurCategorie = 1
             checkFormOkay ()
         }
     })
@@ -367,74 +367,67 @@ function checkFormOkay () {
         document.querySelector(".ajoutPhoto").disabled = false
         document.querySelector(".ajoutPhoto").classList.add("valideForm")
     }
-    postNewProject()
 }
 //function post nouveau projet
-async function postNewProject() {
-    //Récupération des éléments du formulaire
-    let formulaireAjout = document.querySelector(".overlay-formAjout form")
-    let maPhoto = document.querySelector(".imgProjetAjout img")
-    let maPhotoUrl = maPhoto.src
-    let titre = document.getElementById("titre")
-    let categorie = document.getElementById("categorie")
-
-    // Lancement fonction sur soummission formulaire
-    formulaireAjout.addEventListener("submit", async (event) => {
+function postNewProject() {
+    //Récupération du formulaire    
+    let formulaireAjout = document.querySelector(".overlay-formAjout form").addEventListener("submit", async (event) => {
         event.preventDefault()
-        //On crée l'objet de saisie email et password
-        let postAjout = {
-            imageUrl: maPhotoUrl,
-            title: titre.value,
-            categoryId: categorie.value
-        }
-        //On crée l'objet de la charge utile
-        const chargeUtile = JSON.stringify(postAjout)
-        //On envoie à l'aide de fetch
-        let datas = await fetch("http://localhost:5678/api/works", {
+
+        let maPhoto = document.getElementById("monfichier")
+        let titre = document.getElementById("titre")
+        let categorie = document.getElementById("categorie")
+
+        const formData = new FormData()
+        formData.append("image", maPhoto.files[0])
+        formData.append("title", titre.value)
+        formData.append("category", categorie.value)
+
+        await fetch("http://localhost:5678/api/works", {
             method: "POST",
             headers: {
-                Authorization: `Bearer ${monToken}`
+                accept: 'application/json',
+                Authorization: `Bearer ${monToken}`,
             },
-            body: chargeUtile
+            body: formData,
         })
+        window.location.href = "index.html"
     })
+    return formulaireAjout
 }
 //Fermeture des overlay en cliquant sur la partie grisée ou  sur la croix
 function fermeOverlay () {
     let monRetour = document.querySelector(".overlay").addEventListener("click", (e) => {
-        //e.preventDefault()
         if (e.target.classList.contains("overlay") || e.target.classList.contains("fermeture")) {
+            e.preventDefault()
             document.querySelector(".overlay").innerHTML = ""
             document.querySelector(".overlay").classList.add("invisible")
+            document.querySelector(".overlayForm").innerHTML = ""
+            document.querySelector(".overlayForm").classList.add("invisible")
+            window.location.href = "index.html"
         }
     })
     return monRetour
 }
 function fermeOverlayForm () {
     let monRetour = document.querySelector(".overlayForm").addEventListener("click", (e) => {
-        //e.preventDefault()
-        // if (e.target.classList.contains("picture")) {
-        //     console.log("toto")
-        //     document.querySelector(".picture").click()
-        //     document.getElementById("monfichier").click()
-        //     e.stopImmediatePropagation()
-        // }
         if (e.target.classList.contains("overlayForm") || e.target.classList.contains("fermeture")) {
+            e.preventDefault()
             document.querySelector(".overlayForm").innerHTML = ""
             document.querySelector(".overlayForm").classList.add("invisible")
+            document.querySelector(".overlay").innerHTML = ""
+            document.querySelector(".overlay").classList.add("invisible")
+            window.location.href = "index.html"
         }
     })
     return monRetour
 }
-// function clicAjoutPhoto () {
-//     let monAjoutPhoto = document.querySelector(".picture").add.addEventListener ("onclic", (e) => {
-//         e.preventDefault()
-//         // e.stopPropagation()
-//     })
-// }
-// document.querySelector(".overlay").addEventListener("click", (e) => {
-//     e.preventDefault()
-//     document.querySelector(".overlay").innerHTML = ""
-//     document.querySelector(".overlay").classList.add("invisible")
-//     e.stopImmediatePropagation()
-// })
+//Retour overlay ajout projet vers overlay suppr projet
+function retourOverlay () {
+    let retourform = document.querySelector(".retour").addEventListener("click", (e) => {
+        e.preventDefault()
+        fermeOverlayForm()
+        ouvreOverlaySuppr()
+    })
+    return retourform
+}
