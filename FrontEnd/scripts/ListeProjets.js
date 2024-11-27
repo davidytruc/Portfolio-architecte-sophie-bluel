@@ -1,23 +1,42 @@
 /*DECLARATIONS VARIABLES ET FONCTIONS ASSOCIEES*************************************************************/
 
 let logout = document.querySelector(".logout")
-/*On regarde si le localstorage contient le token*/
-let monToken = dataToken()
 //Vérification du token
 function dataToken(){
     return window.localStorage.getItem("monToken")
 }
-//Variable contenant les données API Catégories
-let Categories = await dataCategories()
+//Récupération des données Projets via l'API
+async function GetWorks(autres){
+    const projetsListes = await fetch("http://localhost:5678/api/works")
+    
+    if (projetsListes.error) {
+        console.log("Impossible de charger les projets :", projetsListes.error)
+    } else {
+        console.log("Projets récupérés :", projetsListes)
+        const Listes = await projetsListes.json()
+        if (autres === "Tous") {
+            return Listes
+        } else {
+            const ListesF = Listes.filter(function (projet) {
+            return projet.category.name === autres
+        })
+            return ListesF
+        }
+    }
+}
 // Récupération des données catégories via l'API
 async function dataCategories () {
     let dataCategories = await fetch("http://localhost:5678/api/categories")
-    let categories = await dataCategories.json()
-    return categories
+    
+    if (dataCategories.error) {
+        console.log("Impossible de charger les catégories :", dataCategories.error)
+    } else {
+        console.log("Catégories récupérées :", dataCategories)
+        let categories = await dataCategories.json()
+        return categories
+    }
 }
-let compteurPhoto = ""
-let compteurCategorie = ""
-let compteurTitre = ""
+
 /**********************************************************************************************************/
 
 
@@ -27,6 +46,7 @@ let compteurTitre = ""
 
 //Fonction de création des balises principales dans la balise id portfolio
 function creationDomPortfolio (){
+    let monToken = dataToken()
     let login = document.querySelector(".login")
     const elemPortfolio = document.getElementById("portfolio")
     elemPortfolio.innerHTML=""
@@ -67,6 +87,8 @@ function eventModifs () {
 //Cette partie de code me permet de créer la liste des catégories pour création des boutons filtre
 async function ListeCategories() {
 
+    const Categories = await dataCategories()
+
     //Récupération de la balise dans laquelle créer les boutons de filtres
     const elemFiltres = document.querySelector(".filtres")
 
@@ -82,19 +104,6 @@ async function ListeCategories() {
         btnCategories.classList.add("btnFiltres")
         btnCategories.innerText = Categories[i].name
         elemFiltres.appendChild(btnCategories)
-    }
-}
-// //Récupération des données Projets via l'API
-async function GetWorks(autres){
-    const projetsListes = await fetch("http://localhost:5678/api/works")
-    const Listes = await projetsListes.json()
-    if (autres === "Tous") {
-        return Listes
-    } else {
-        const ListesFiltrees = Listes.filter(function (projet) {
-            return projet.category.name === autres
-        })
-        return ListesFiltrees
     }
 }
 //Cette partie de code me permet d'afficher dynamiquement tous les projets
@@ -139,6 +148,7 @@ ListeProjets("Tous")
 
 logout.addEventListener("click", (e) => {
     e.preventDefault()
+    let monToken = dataToken()
     window.localStorage.removeItem("monToken")
     window.location.href = "index.html"
 })
@@ -204,7 +214,6 @@ function ouvreOverlaySuppr() {
 async function overlayProjets(mesFiltres) {
 
     const Listes = await GetWorks(mesFiltres)
-
     //On récupère la balise classe overlay-figure
     let ElemGallery = document.querySelector(".overlay-figure")
     ElemGallery.innerHTML = ""
@@ -233,8 +242,9 @@ async function overlayProjets(mesFiltres) {
         ElemGallery.appendChild(elemFigure)
     }
 }
-//Fonction de suppression d'un projet
+//Fonctions de suppression d'un projet
 async function supprProjet (idProjet) {
+    let monToken = dataToken()
     if (monToken !== undefined || monToken !== null){
         const deleteProjet = await fetch(`http://localhost:5678/api/works/${idProjet}`, {
             method: "DELETE",
@@ -277,7 +287,7 @@ function ouvreOverlayForm () {
                                 <i class="fa-regular fa-image i-image"></i>
                                 <div class="file-hidden">
                                     <label for="monfichier" class="picture">+ Ajouter photo</label>
-                                    <input type="file" name="file" id="monfichier" required hidden>
+                                    <input type="file" name="file" id="monfichier" accept="image/jpeg, image/png" required hidden>
                                 </div>
                                 <p class="taille-image">jpg. png. : 4mo max</p>
                             </div>
@@ -307,7 +317,9 @@ function ouvreOverlayForm () {
     return ouvreOverlayForm
 }
 //Fonction liste déroulante catégories
-function listeDerCategories () {
+async function listeDerCategories () {
+    
+    const Categories = await dataCategories()
     //Récupération de la balise dans laquelle créer les boutons option
     const idCategories = document.getElementById("categorie")
     const vide = document.createElement("option")
@@ -326,17 +338,21 @@ function listeDerCategories () {
 //Fonction + Ajouter photo
 function ajouterPhoto() {
     let btnAjouterPhoto = document.getElementById("monfichier").addEventListener("input", (e) => {
-        let maPhoto = document.querySelector(".imgProjetAjout")
-        maPhoto.classList.remove("invisible")
-        if (e.target.files[0]) {
-            maPhoto.querySelector("img").src = window.URL.createObjectURL(e.target.files[0])
-            document.querySelector(".cadreAjout i").remove()
-            document.querySelector(".file-hidden").classList.add("invisible")
-            document.querySelector(".taille-image").remove()
-            document.querySelector(".cadreAjout").classList.add("paspadding")
-            document.getElementById("titre").focus()
-            compteurPhoto = 1
-            checkFormOkay ()
+        let maphotofile = document.getElementById("monfichier").files[0]
+        if (maphotofile.type !== "image/jpeg" && maphotofile.type !== "image/png") {
+            console.log("Veuillez sélectionner un fichier JPG ou PNG.")
+        } else {
+            let maPhoto = document.querySelector(".imgProjetAjout")
+            maPhoto.classList.remove("invisible")
+            if (e.target.files[0]) {
+                maPhoto.querySelector("img").src = window.URL.createObjectURL(e.target.files[0])
+                document.querySelector(".cadreAjout i").remove()
+                document.querySelector(".file-hidden").classList.add("invisible")
+                document.querySelector(".taille-image").remove()
+                document.querySelector(".cadreAjout").classList.add("paspadding")
+                document.getElementById("titre").focus()
+                checkFormOkay ()
+            }
         }
     })
     return btnAjouterPhoto
@@ -345,7 +361,6 @@ function ajouterPhoto() {
 function ajoutTitre() {
     let monAjoutTitre = document.getElementById("titre").addEventListener("change", () => {
         if (document.getElementById("titre").value !== "") {
-            compteurTitre = 1
             checkFormOkay ()
         }
     })
@@ -355,7 +370,6 @@ function ajoutTitre() {
 function ajoutCategorie() {
     let monAjoutCategorie = document.getElementById("categorie").addEventListener("change", () => {
         if (document.getElementById("categorie").value !== "") {
-            compteurCategorie = 1
             checkFormOkay ()
         }
     })
@@ -363,7 +377,11 @@ function ajoutCategorie() {
 }
 //Fonction de vérification que le formulaire est bien rempli
 function checkFormOkay () {
-    if (compteurCategorie + compteurPhoto + compteurTitre == 3) {
+    let btnAjouterPhoto = document.getElementById("monfichier")
+    let monAjoutTitre = document.getElementById("titre")
+    let monAjoutCategorie = document.getElementById("categorie")
+
+    if (btnAjouterPhoto.files.length > 0 && monAjoutTitre.value !== "" && monAjoutCategorie.value !== "") {
         document.querySelector(".ajoutPhoto").disabled = false
         document.querySelector(".ajoutPhoto").classList.add("valideForm")
     }
@@ -374,6 +392,7 @@ function postNewProject() {
     let formulaireAjout = document.querySelector(".overlay-formAjout form").addEventListener("submit", async (event) => {
         event.preventDefault()
 
+        let monToken = dataToken()
         let maPhoto = document.getElementById("monfichier")
         let titre = document.getElementById("titre")
         let categorie = document.getElementById("categorie")
