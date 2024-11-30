@@ -50,7 +50,7 @@ table {
 
 a {
 	text-decoration: none;
-	font: 'syne';
+	font-family: 'syne';
 	color: black;
 }
 
@@ -427,6 +427,9 @@ footer nav ul {
 	padding-top: 15px;
 	color: red;
 	font-size: 60%;
+}
+.taille-image-not-ok {
+	font-size: 100%;
 }
 .form-saisie {
 	margin: 25px 0;

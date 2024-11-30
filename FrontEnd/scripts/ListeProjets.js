@@ -8,32 +8,26 @@ function dataToken(){
 //Récupération des données Projets via l'API
 async function GetWorks(autres){
     const projetsListes = await fetch("http://localhost:5678/api/works")
-    
-    if (projetsListes.error) {
-        console.log("Impossible de charger les projets :", projetsListes.error)
+    const Listes = await projetsListes.json()
+    if (autres === "Tous") {
+        return Listes
     } else {
-        console.log("Projets récupérés :", projetsListes)
-        const Listes = await projetsListes.json()
-        if (autres === "Tous") {
-            return Listes
-        } else {
-            const ListesF = Listes.filter(function (projet) {
-            return projet.category.name === autres
-        })
-            return ListesF
-        }
+        const ListesF = Listes.filter(function (projet) {
+        return projet.category.name === autres
+    })
+        return ListesF
     }
 }
 // Récupération des données catégories via l'API
 async function dataCategories () {
-    let dataCategories = await fetch("http://localhost:5678/api/categories")
-    
-    if (dataCategories.error) {
-        console.log("Impossible de charger les catégories :", dataCategories.error)
-    } else {
-        console.log("Catégories récupérées :", dataCategories)
+    try {
+        let dataCategories = await fetch("http://localhost:5678/api/categories")
         let categories = await dataCategories.json()
         return categories
+    } catch (error) {
+        alert("Toto")
+        console.log(error)
+        console.error(error)
     }
 }
 
@@ -118,6 +112,7 @@ async function ListeProjets(mesFiltres) {
     //On crée une boucle pour créer les élements du DOM
     for (let i = 0; i < Listes.length; i++){   
         const elemFigure = document.createElement("figure")
+        elemFigure.setAttribute("data-id", Listes[i].id)
         const elemImg = document.createElement("img")
         elemImg.src = Listes[i].imageUrl
         const elemFigcaption = document.createElement("figcaption")
@@ -148,7 +143,6 @@ ListeProjets("Tous")
 
 logout.addEventListener("click", (e) => {
     e.preventDefault()
-    let monToken = dataToken()
     window.localStorage.removeItem("monToken")
     window.location.href = "index.html"
 })
@@ -255,7 +249,7 @@ async function supprProjet (idProjet) {
     }
 }
 function supprFigureProjet (idProjet) {
-    let figureProjet = document.querySelectorAll(".overlay-figure figure")
+    let figureProjet = document.querySelectorAll("figure")
     for (let i = 0; i < figureProjet.length; i++) {
         if (figureProjet[i].dataset.id == idProjet) {
             figureProjet[i].remove()
@@ -339,8 +333,9 @@ async function listeDerCategories () {
 function ajouterPhoto() {
     let btnAjouterPhoto = document.getElementById("monfichier").addEventListener("input", (e) => {
         let maphotofile = document.getElementById("monfichier").files[0]
-        if (maphotofile.type !== "image/jpeg" && maphotofile.type !== "image/png") {
-            console.log("Veuillez sélectionner un fichier JPG ou PNG.")
+        if (maphotofile.type !== "image/jpeg" && maphotofile.type !== "image/png" && maphotofile.size > 4 * 1024 * 1024) {
+            document.querySelector(".taille-image").classList.add("taille-image-not-ok")
+            document.querySelector(".taille-image").innerText = "Veuillez respecter le format et la taille du fichier : jpg. png. : 4mo max"
         } else {
             let maPhoto = document.querySelector(".imgProjetAjout")
             maPhoto.classList.remove("invisible")
@@ -410,7 +405,11 @@ function postNewProject() {
             },
             body: formData,
         })
-        window.location.href = "index.html"
+        ListeProjets("Tous")
+        document.querySelector(".overlayForm").innerHTML = ""
+        document.querySelector(".overlayForm").classList.add("invisible")
+        document.querySelector(".overlay").innerHTML = ""
+        document.querySelector(".overlay").classList.add("invisible")
     })
     return formulaireAjout
 }
@@ -423,7 +422,6 @@ function fermeOverlay () {
             document.querySelector(".overlay").classList.add("invisible")
             document.querySelector(".overlayForm").innerHTML = ""
             document.querySelector(".overlayForm").classList.add("invisible")
-            window.location.href = "index.html"
         }
     })
     return monRetour
@@ -436,7 +434,6 @@ function fermeOverlayForm () {
             document.querySelector(".overlayForm").classList.add("invisible")
             document.querySelector(".overlay").innerHTML = ""
             document.querySelector(".overlay").classList.add("invisible")
-            window.location.href = "index.html"
         }
     })
     return monRetour

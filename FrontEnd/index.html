@@ -10,22 +10,22 @@
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 	<script src="https://kit.fontawesome.com/02a8e81d2a.js" crossorigin="anonymous"></script>
-	<!--Commit 1 :
+	<!--
 	- Création du fichier script.js dans le dossier frontend script
 	- Ajout de la balise script avec defer pour attendre la fin du chargement de la page
-	- Ajout de type="module" pour préciser qu'il s'agit d'un script de type javascript -->
-	<script type="module" src="scripts/ListeProjets.js" defer></script>
+	-->
+	<script src="scripts/ListeProjets.js" defer></script>
 </head>
 <body>
 <header>
 	<a href="" title="Logo Sophie Buel"><h1>Sophie Bluel<span>Architecte d'intérieur</span></h1></a>
 	<nav>
 		<ul>
-			<a href="" title="Projets"><li>Projets</li></a>
-			<a href="" title="Contact"><li>Contact</li></a>
-			<a href="login.html" title="Login" class="login"><li>Login</li></a>
-			<a href="" title="Logout" class="logout invisible"><li>Logout</li></a>
-			<a href="" title="Instagram"><li><img src="./assets/icons/instagram.png" alt="Instagram"></li></a>
+			<li><a href="" title="Projets">Projets</a></li>
+			<li><a href="" title="Contact">Contact</a></li>
+			<li><a href="login.html" title="Login" class="login">Login</a></li>
+			<li><a href="" title="Logout" class="logout invisible">Logout</a></li>
+			<li><a href="" title="Instagram"><img src="./assets/icons/instagram.png" alt="Instagram"></a></li>
 		</ul>
 	</nav>
 </header>
@@ -48,9 +48,9 @@
 		<p>Vous avez un projet ? Discutons-en !</p>
 		<form action="#" method="post">
 			<label for="name">Nom</label>
-			<input type="text" name="name" id="name">
+			<input type="text" name="name" autocomplete="family-name" id="name">
 			<label for="email">Email</label>
-			<input type="email" name="email" id="email">
+			<input type="email" name="email" autocomplete="email" id="email">
 			<label for="message">Message</label>
 			<textarea name="message" id="message" cols="30" rows="10"></textarea>
 			<input type="submit" value="Envoyer" class="valid">
@@ -64,7 +64,7 @@
 <footer>
 	<nav>
 		<ul>
-			<a href="" title="Mentions légales"><li>Mentions Légales</li></a>
+			<li><a href="" title="Mentions légales">Mentions Légales</a></li>
 		</ul>
 	</nav>
 </footer>
