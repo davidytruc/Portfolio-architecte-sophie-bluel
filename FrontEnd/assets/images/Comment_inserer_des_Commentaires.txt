@@ -1,0 +1,9 @@
+HTML :
+<!-- J'écris ici mon commentaire -->
+
+CSS :
+/* J'écris ici mon commentaire */
+
+JS :
+/* J'écris ici mon commentaire */
+

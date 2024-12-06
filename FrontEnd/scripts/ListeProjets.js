@@ -25,7 +25,6 @@ async function dataCategories () {
         let categories = await dataCategories.json()
         return categories
     } catch (error) {
-        alert("Toto")
         console.log(error)
         console.error(error)
     }
@@ -333,10 +332,8 @@ async function listeDerCategories () {
 function ajouterPhoto() {
     let btnAjouterPhoto = document.getElementById("monfichier").addEventListener("input", (e) => {
         let maphotofile = document.getElementById("monfichier").files[0]
-        if (maphotofile.type !== "image/jpeg" && maphotofile.type !== "image/png" && maphotofile.size > 4 * 1024 * 1024) {
-            document.querySelector(".taille-image").classList.add("taille-image-not-ok")
-            document.querySelector(".taille-image").innerText = "Veuillez respecter le format et la taille du fichier : jpg. png. : 4mo max"
-        } else {
+        //Vrai et vrai, vrai ou faux --> Le && permet de verifier que toutes les conditions sont vraies
+        if ((maphotofile.type === "image/jpeg" || maphotofile.type === "image/png") && maphotofile.size <= 4 * 1024 * 1024) {
             let maPhoto = document.querySelector(".imgProjetAjout")
             maPhoto.classList.remove("invisible")
             if (e.target.files[0]) {
@@ -348,6 +345,9 @@ function ajouterPhoto() {
                 document.getElementById("titre").focus()
                 checkFormOkay ()
             }
+        } else {
+            document.querySelector(".taille-image").classList.add("taille-image-not-ok")
+            document.querySelector(".taille-image").innerText = "Veuillez respecter le format et la taille du fichier : jpg. png. : 4mo max"
         }
     })
     return btnAjouterPhoto
